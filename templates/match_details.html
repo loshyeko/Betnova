@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>BetNova</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="BetNova">
+    </div>
+
+    <a href="/dashboard" class="back-btn">← Back</a>
+
+</header>
+
+<div class="match-header">
+
+    <div class="match-time">
+        {{ match[4] }}
+    </div>
+
+    <h2>{{ match[2] }} vs {{ match[3] }}</h2>
+
+    <div class="league-name">
+        {{ match[1] }}
+    </div>
+
+</div>
+
+<div class="market-section">
+
+<div class="market-title">
+Available Markets
+</div>
+
+{% set current_market = "" %}
+
+{% for market in markets %}
+
+{% if current_market != market[0] %}
+
+{% if not loop.first %}
+</div>
+{% endif %}
+
+<h3>{{ market[0] }}</h3>
+
+<div class="market-row">
+
+{% set current_market = market[0] %}
+
+{% endif %}
+
+<button class="odd-btn"
+onclick="addToBet(
+'{{ match[0] }}',
+'{{ match[2] }} vs {{ match[3] }}',
+'{{ market[0] }}',
+'{{ market[1] }}',
+'{{ market[2] }}'
+)">
+
+{{ market[1] }}
+
+<br>
+
+{{ market[2] }}
+
+</button>
+
+{% if loop.last %}
+</div>
+{% endif %}
+
+{% endfor %}
+
+</div>
+
+<div class="market-section">
+
+<div class="market-title">
+Additional Markets
+</div>
+
+<details>
+
+<summary>Double Chance</summary>
+
+<div class="market-row">
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Double Chance','1X','1.32')">
+1X<br>1.32
+</button>
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Double Chance','12','1.28')">
+12<br>1.28
+</button>
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Double Chance','X2','1.60')">
+X2<br>1.60
+</button>
+
+</div>
+
+</details>
+
+<details>
+
+<summary>Over / Under</summary>
+
+<div class="market-row">
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Over / Under','Over 2.5','1.90')">
+O 2.5<br>1.90
+</button>
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Over / Under','Under 2.5','1.90')">
+U 2.5<br>1.90
+</button>
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Over / Under','Over 3.5','2.75')">
+O 3.5<br>2.75
+</button>
+
+</div>
+
+</details>
+
+<details>
+
+<summary>Both Teams To Score</summary>
+
+<div class="market-row">
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Both Teams To Score','Yes','1.70')">
+Yes<br>1.70
+</button>
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Both Teams To Score','No','2.05')">
+No<br>2.05
+</button>
+
+</div>
+
+</details>
+
+<details>
+
+<summary>Correct Score</summary>
+
+<div class="market-row">
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Correct Score','1-0','7.00')">
+1-0<br>7.00
+</button>
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Correct Score','1-1','6.20')">
+1-1<br>6.20
+</button>
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Correct Score','2-1','8.30')">
+2-1<br>8.30
+</button>
+
+</div>
+
+</details>
+
+</div>
+
+<script>
+const currency = "{{ currency }}";
+</script>
+
+<script src="{{ url_for('static', filename='js/language.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
+
+
+

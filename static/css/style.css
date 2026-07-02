@@ -1,0 +1,708 @@
+body{
+    margin:0;
+    background:#0b0f0d;
+    color:white;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+.topbar{
+    height:70px;
+    background:#121212;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 20px;
+    border-bottom:1px solid #1f1f1f;
+}
+
+.logo img{
+    height: 50px;
+    width:auto;
+}
+
+.menu-links{
+    display:flex;
+    gap:30px;
+}
+
+.menu-links a{
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.menu-links a:hover{
+    color:#21c45a;
+}
+
+.wallet-section{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.balance{
+    color:#32d74b;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.deposit-btn{
+    background:#20c850;
+    color:white;
+    border:none;
+    border-radius:8px;
+    padding:10px 18px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.eye-btn,
+.profile-btn{
+    color:white;
+    text-decoration:none;
+    font-size:20px;
+    background:none;
+    border:none;
+    cursor:pointer;
+}
+
+.match-card{
+
+background:#181818;
+
+border-radius:15px;
+
+padding:18px;
+
+margin-bottom:15px;
+
+}
+
+.match-time{
+
+color:#9e9e9e;
+
+font-size:13px;
+
+margin-bottom:12px;
+
+}
+
+.teams{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:22px;
+
+font-weight:bold;
+
+margin-bottom:10px;
+
+}
+
+.home-team{
+
+flex:1;
+
+text-align:right;
+
+}
+
+.away-team{
+
+flex:1;
+
+text-align:left;
+
+}
+
+.vs{
+
+margin:0 15px;
+
+color:#25d366;
+
+}
+
+.league{
+
+text-align:center;
+
+font-size:14px;
+
+color:#bbbbbb;
+
+margin-bottom:15px;
+
+}
+
+.markets{
+
+display:flex;
+
+gap:10px;
+
+}
+
+.odd-btn{
+
+flex:1;
+
+height:60px;
+
+background:#262626;
+
+border:none;
+
+color:white;
+
+border-radius:10px;
+
+font-size:18px;
+
+cursor:pointer;
+
+}
+
+.odd-btn:hover{
+
+background:#25d366;
+
+color:black;
+
+}
+
+.more-btn{
+
+width:60px;
+
+background:#101010;
+
+border:none;
+
+color:#25d366;
+
+font-size:26px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+}
+
+.matches-list{
+    padding:20px;
+}
+
+.match-card{
+    background:#181818;
+    border-radius:12px;
+    padding:18px;
+    margin-bottom:18px;
+}
+
+.match-time{
+    color:#999;
+    font-size:13px;
+    margin-bottom:12px;
+}
+
+.teams{
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.vs{
+    color:#25d366;
+    margin:0 10px;
+}
+
+.league{
+    text-align:center;
+    color:#bdbdbd;
+    margin-bottom:18px;
+}
+
+.markets{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 60px;
+    gap:10px;
+}
+
+.odd-btn{
+    background:#252525;
+    border:none;
+    color:white;
+    border-radius:10px;
+    padding:10px;
+    cursor:pointer;
+}
+
+.market-name{
+    font-size:13px;
+    color:#999;
+}
+
+.market-odd{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.more-btn{
+
+    width:70px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#25d366;
+
+    color:black;
+
+    text-decoration:none;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    transition:0.2s;
+
+}
+
+.more-btn:hover{
+
+    background:#1fb456;
+
+}
+
+.banner{
+
+    margin:20px;
+
+    background:linear-gradient(90deg,#0f7d3a,#19b85c);
+
+    border-radius:15px;
+
+    padding:25px;
+
+    color:white;
+
+}
+
+.banner-content{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.banner h1{
+
+    margin:10px 0;
+
+    font-size:32px;
+
+}
+
+.banner p{
+
+    font-size:16px;
+
+}
+
+.claim-btn{
+
+    margin-top:15px;
+
+    background:white;
+
+    color:#0f7d3a;
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:8px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.sports{
+
+    display:flex;
+
+    gap:12px;
+
+    overflow-x:auto;
+
+    padding:15px 20px;
+
+    margin-bottom:15px;
+
+}
+
+.sports::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+.sport{
+
+    background:#222;
+
+    color:white;
+
+    border:none;
+
+    border-radius:25px;
+
+    padding:10px 18px;
+
+    cursor:pointer;
+
+    white-space:nowrap;
+
+    font-weight:bold;
+
+}
+
+.sport:hover{
+
+    background:#25d366;
+
+    color:black;
+
+}
+
+.sport.active{
+
+    background:#25d366;
+
+    color:black;
+
+}
+
+.leagues{
+
+    display:flex;
+
+    gap:10px;
+
+    overflow-x:auto;
+
+    padding:0 20px 20px;
+
+}
+
+.leagues::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+.league-tab{
+
+    background:#181818;
+
+    color:white;
+
+    border:1px solid #333;
+
+    border-radius:20px;
+
+    padding:8px 16px;
+
+    cursor:pointer;
+
+    white-space:nowrap;
+
+}
+
+.league-tab.active{
+
+    background:#25d366;
+
+    color:black;
+
+    border-color:#25d366;
+
+}
+
+.back-btn{
+    color:white;
+    text-decoration:none;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.match-header{
+    text-align:center;
+    padding:20px;
+    color:white;
+}
+
+.match-time{
+    color:#999;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.league-name{
+    color:#25d366;
+    font-size:16px;
+    margin-top:8px;
+}
+
+.market-section{
+    background:#181818;
+    margin:20px;
+    padding:20px;
+    border-radius:12px;
+}
+
+.market-title{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:15px;
+    color:white;
+}
+
+.market-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.market-link{
+    width:100%;
+    background:#222;
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:15px;
+    margin-top:10px;
+    text-align:left;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.market-link:hover{
+    background:#25d366;
+    color:black;
+}
+
+details{
+
+    background:#222;
+
+    margin-bottom:12px;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+}
+
+summary{
+
+    list-style:none;
+
+    cursor:pointer;
+
+    padding:15px;
+
+    color:white;
+
+    font-weight:bold;
+
+}
+
+summary:hover{
+
+    background:#25d366;
+
+    color:black;
+
+}
+
+details .market-row{
+
+    padding:15px;
+
+}
+
+
+.bet-summary{
+
+    margin-top:20px;
+
+}
+
+.summary-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:15px;
+
+}
+
+#stake{
+
+    width:120px;
+
+    padding:8px;
+
+    border-radius:6px;
+
+    border:none;
+
+}
+
+#place-bet-btn{
+
+    width:100%;
+
+    padding:14px;
+
+    background:#25d366;
+
+    color:black;
+
+    border:none;
+
+    border-radius:10px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.bet-card{
+
+    background:#1b1b1b;
+
+    color:white;
+
+    padding:20px;
+
+    margin:20px;
+
+    border-radius:12px;
+
+    border-left:5px solid #25d366;
+
+}
+
+.bottom-nav{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 65px;
+    background: #111827;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #2d3748;
+    z-index: 1000;
+}
+
+.nav-item{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:#cbd5e1;
+    text-decoration:none;
+    font-size:11px;
+    font-weight:600;
+}
+
+.nav-icon{
+    font-size:22px;
+    margin-bottom:3px;
+}
+
+.nav-text{
+    font-size:11px;
+}
+
+.nav-item.active{
+    color:#22c55e;
+}
+
+.nav-item:hover{
+    color:#22c55e;
+}
+
+body{
+    padding-bottom:80px;
+}
+
+.bet-icon-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.bet-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: #ff4d4f;
+    color: #fff;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.casino-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+.game-card{
+    background:#222;
+    color:white;
+    padding:25px;
+    border-radius:12px;
+    text-align:center;
+    font-size:20px;
+    transition:.3s;
+}
+
+.game-card:hover{
+    background:#42d742;
+    color:black;
+    cursor:pointer;
+}

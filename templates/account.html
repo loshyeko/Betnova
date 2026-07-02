@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Account - BetNova</title>
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="account-container">
+
+    <h2>My Account</h2>
+
+    <div class="account-card">
+
+        <p><strong>Phone:</strong> {{ phone }}</p>
+
+        <p><strong>Balance:</strong> {{ currency }} {{ "{:,.2f}".format(balance|float) }}</p>
+
+    </div>
+
+    <a href="/my_bets" class="account-btn">
+        🎟 My Bets
+    </a>
+
+    <a href="/deposit">Deposit</a>
+    </a>
+
+    <a href="/withdraw" class="account-btn">
+        💸 Withdraw
+    </a>
+
+    <a href="/logout" class="account-btn logout">
+        🚪 Logout
+    </a>
+
+</div>
+<script src="{{ url_for('static', filename='js/language.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>

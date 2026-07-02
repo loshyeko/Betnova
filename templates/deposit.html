@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deposit</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<h2>Deposit</h2>
+
+<p>Balance: {{ currency }} {{ balance }}</p>
+
+<label>Registered Number</label><br>
+<input type="text" value="{{ phone }}" readonly>
+
+<br><br>
+
+<label>Amount</label><br>
+<input type="number" placeholder="Enter amount">
+
+<br><br>
+
+<button>Continue</button>
+
+<a href="/account">← Back</a>
+
+</body>
+</html>

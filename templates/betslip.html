@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Bet Slip - BetNova</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <a href="/dashboard" class="back-btn">← Back</a>
+
+    <h2>🧾 Bet Slip</h2>
+
+</header>
+
+<div id="bet-slip">
+
+    <div id="bet-items">
+
+        <p class="empty-slip">
+            No selections yet.
+        </p>
+
+    </div>
+
+    <div class="bet-summary">
+
+        <div class="summary-row">
+
+            <span>Total Odds</span>
+
+            <span id="total-odds">1.00</span>
+
+        </div>
+
+        <div class="summary-row">
+
+            <span>Stake</span>
+
+            <input
+            type="number"
+            id="stake"
+            placeholder="Enter stake">
+
+        </div>
+
+        <div class="summary-row">
+
+            <span>Potential Win</span>
+
+            <span id="potential-win">
+                {{ currency }} 0.00
+            </span>
+
+        </div>
+
+        <button id="place-bet-btn">
+            Place Bet
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+const currency = "{{ currency }}";
+</script>
+
+<script src="{{ url_for('static', filename='js/language.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>

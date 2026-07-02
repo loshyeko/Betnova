@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BetNova</title>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="BetNova Logo">
+    </div>
+
+    <div class="language-selector">
+    <select id="language" onchange="changeLanguage(this.value)">
+        <option value="en">🇬🇧 English</option>
+        <option value="fr">🇨🇩 Français</option>
+    </select>
+</div>
+
+    <nav class="menu-links">
+        <a href="/dashboard">Home</a>
+        <a href="/matches">Sports</a>
+        <a href="/live">Live</a>
+        <a href="/casino">Casino</a>
+        <a href="/promotions">Promotions</a>
+    </nav>
+
+    <div class="wallet-section">
+
+        <button class="eye-btn" id="toggle-balance">
+        <i class="fa-solid fa-eye"></i>
+        </button>
+
+        <span class="balance" id="balance">
+            {{ currency }} {{ balance }}
+        </span>
+
+        <button class="deposit-btn">
+            + Deposit
+        </button>
+
+        <a href="/account" class="profile-btn">
+            👤
+        </a>
+
+    </div>
+
+</header>
+
+<section class="banner">
+
+    <h2data-lang="depositBonus">50% Deposit
+        Bonus</h2>
+
+    <p><span data-lang="upto">Up to</span> 
+        {{ currency }} 5000</p>
+
+</section>
+        
+<button onclick="filterSport('Football')">Football</button>
+
+<button onclick="filterSport('Basketball')">Basketball</button>
+
+<button onclick="filterSport('Tennis')">Tennis</button>
+
+<button onclick="filterSport('Volleyball')">Volleyball</button>
+
+<button onclick="filterSport('Cricket')">Cricket</button>
+
+<button onclick="filterSport('eSports')">eSports</button>
+
+<section class="leagues">
+
+    <button onclick="filterLeague('Premier League')">Premier League</button>
+
+<button onclick="filterLeague('La Liga')">La Liga</button>
+
+<button onclick="filterLeague('Serie A')">Serie A</button>
+
+<button onclick="filterLeague('Bundesliga')">Bundesliga</button>
+
+<button onclick="filterLeague('Ligue 1')">Ligue 1</button>
+</section>
+
+
+<section class="matches-list">
+
+{% for match in matches %}
+
+<div class="match-card">
+
+    <div class="match-time">
+        {{ match[4].strftime("%H:%M") }} • {{ match[4].strftime("%a %d/%m") }}
+    </div>
+
+    <div class="teams">
+        <span class="home-team">{{ match[2] }}</span>
+        <span class="vs">vs</span>
+        <span class="away-team">{{ match[3] }}</span>
+    </div>
+
+    <div class="league">
+        {{ match[1] }}
+    </div>
+
+    <div class="markets">
+
+      <button class="odd-btn"
+onclick="addToBet(
+'{{ match[0] }}',
+'{{ match[2] }} vs {{ match[3] }}',
+'1X2',
+'Home',
+'{{ match[5] }}'
+)">
+<div class="market-name">1</div>
+<div class="market-odd">{{ match[5] }}</div>
+</button>
+
+<button class="odd-btn"
+onclick="addToBet(
+'{{ match[0] }}',
+'{{ match[2] }} vs {{ match[3] }}',
+'1X2',
+'Draw',
+'{{ match[6] }}'
+)">
+<div class="market-name">X</div>
+<div class="market-odd">{{ match[6] }}</div>
+</button>
+
+<button class="odd-btn"
+onclick="addToBet(
+'{{ match[0] }}',
+'{{ match[2] }} vs {{ match[3] }}',
+'1X2',
+'Away',
+'{{ match[7] }}'
+)">
+<div class="market-name">2</div>
+<div class="market-odd">{{ match[7] }}</div>
+</button>
+
+    
+
+        <a href="/match/{{ match[0] }}" class="more-btn">
+            +66
+        </a>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</section>
+
+
+</div>
+
+<nav class="bottom-nav">
+
+    <a href="/dashboard" class="nav-item active">
+        <i class="fa-solid fa-house nav-icon"></i>
+        <span class="nav-text"
+        data-lang="home">Home</span>
+    </a>
+
+    <a href="/dashboard" class="nav-item">
+        <i class="fa-solid fa-futbol nav-icon"></i>
+        <span class="nav-text" 
+        data-lang="sports">Sports</span>
+    </a>
+
+    <a href="/betslip" class="nav-item betslip-nav">
+    <div class="bet-icon-wrapper">
+        <i class="fa-solid fa-ticket nav-icon"></i>
+        <span id="bet-count" class="bet-badge">0</span>
+    </div>
+
+    <span class="nav-text" 
+    data-lang="betslip">Bet Slip</span>
+</a>
+
+
+    <a href="/account" class="nav-item">
+        <i class="fa-solid fa-user nav-icon"></i>
+        <span class="nav-text"
+        data-lang="account">Account</span>
+    </a>
+
+</nav>
+
+<script src="{{ url_for('static', filename='js/language.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

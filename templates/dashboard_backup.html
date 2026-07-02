@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BetNova</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="page">
+
+<header class="topbar">
+
+    <div class="logo">
+
+        <img src="{{ url_for('static', filename='images/logo.png') }}"
+             alt="BetNova">
+
+    </div>
+
+    <nav class="menu-links">
+
+        <a href="/dashboard">Home</a>
+
+        <a href="/matches">Sports</a>
+
+        <a href="/live">Live</a>
+
+        <a href="/casino">Casino</a>
+
+        <a href="/promotions">Promotions</a>
+
+    </nav>
+
+    <div class="wallet-section">
+
+        <button class="eye-btn">👁</button>
+
+        <span class="balance">
+
+            {{ currency }} {{ balance }}
+
+        </span>
+
+        <button class="deposit-btn">
+
+            Deposit
+
+        </button>
+
+    </div>
+
+</header>
+
+<div class="main-content">
+
+<section class="banner">
+
+    <div class="banner-content">
+
+        <div class="banner-text">
+
+            <h2>🎁 Welcome Bonus</h2>
+
+            <h1>50% Deposit Bonus</h1>
+
+            <p>Up to FC 10,000 on your first deposit.</p>
+
+            <button class="claim-btn">
+                Claim Now
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="sports">
+
+<button>⚽ Football</button>
+
+<button>🏀 Basketball</button>
+
+<button>🎾 Tennis</button>
+
+<button>🏐 Volleyball</button>
+
+<button>🎮 eSports</button>
+
+</section>
+
+<section class="leagues">
+
+<button>Premier League</button>
+
+<button>La Liga</button>
+
+<button>Serie A</button>
+
+<button>Bundesliga</button>
+
+<button>Ligue 1</button>
+
+</section>
+
+
+<section class="matches-list">
+
+{% for match in matches %}
+
+<div class="match-card">
+
+    <div class="match-time">
+        {{ match[4].strftime("%H:%M") }} • {{ match[4].strftime("%a %d/%m") }}
+    </div>
+
+    <div class="teams">
+        <span class="home-team">{{ match[2] }}</span>
+        <span class="vs">vs</span>
+        <span class="away-team">{{ match[3] }}</span>
+    </div>
+
+    <div class="league">
+        {{ match[1] }}
+    </div>
+
+    <div class="markets">
+
+        <button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Home','{{ match[5] }}')">
+
+<div class="market-name">1</div>
+
+<div class="market-odd">{{ match[5] }}</div>
+
+</button>
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Draw','{{ match[6] }}')">
+
+<div class="market-name">X</div>
+
+<div class="market-odd">{{ match[6] }}</div>
+
+</button>
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','Away','{{ match[7] }}')">
+
+<div class="market-name">2</div>
+
+<div class="market-odd">{{ match[7] }}</div>
+
+</button>
+
+        
+
+        <a href="/match/{{ match[0] }}" class="more-btn">
+            >
+        </a>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</section>
+
+<div id="bet-slip" class="bet-slip">
+
+    <h3>Bet Slip</h3>
+
+    <p>No selections yet.</p>
+
+</div>
+
+<nav class="bottom-nav">
+
+<button>🏠<br>Home</button>
+
+<button>⚽<br>Sports</button>
+
+<button>🎟<br>Bets</button>
+
+<button>👤<br>Account</button>
+
+</nav>
+
+<script src="{{ url_for('static', filename='js/language.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

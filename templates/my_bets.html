@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Bets - BetNova</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<h2>🎟 My Bets</h2>
+
+{% if bets %}
+
+    {% for bet in bets %}
+
+    <div class="bet-card">
+
+        <h3>Ticket #{{ bet[0] }}</h3>
+
+        <p><strong>Match ID:</strong> {{ bet[1] }}</p>
+
+        <p><strong>Selection:</strong> {{ bet[2] }}</p>
+
+        <p><strong>Odds:</strong> {{ bet[3] }}</p>
+
+        <p><strong>Stake:</strong> {{ currency }} {{ bet[4] }}</p>
+
+        <p><strong>Potential Win:</strong> {{ currency }} {{ bet[5] }}</p>
+
+        <p><strong>Status:</strong>
+
+        {% if bet[6] == "Pending" %}
+            🟡 Pending
+
+        {% elif bet[6] == "Won" %}
+            🟢 Won
+
+        {% elif bet[6] == "Lost" %}
+            🔴 Lost
+
+        {% else %}
+            {{ bet[6] }}
+
+        {% endif %}
+
+        </p>
+
+        <p><strong>Date:</strong> {{ bet[7] }}</p>
+
+    </div>
+
+    <hr>
+
+    {% endfor %}
+
+{% else %}
+
+<h3>No bets placed yet.</h3>
+
+{% endif %}
+
+<script src="{{ url_for('static', filename='js/language.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script><script src="{{ url_for('static', filename='js/language.js') }}"></script>
+
+</body>
+
+</html>

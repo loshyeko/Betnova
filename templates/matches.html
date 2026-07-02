@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BetNova Matches</title>
+</head>
+
+<body>
+
+<h1>Today's Matches</h1>
+
+{% for match in matches %}
+
+<hr>
+
+<h3>{{ match[2] }} vs {{ match[3] }}</h3>
+
+<p>{{ match[1] }}</p>
+
+<button>{{ match[5] }}</button>
+
+<button>{{ match[6] }}</button>
+
+<button>{{ match[7] }}</button>
+
+{% endfor %}
+
+<br><br>
+
+<a href="/dashboard">⬅ Dashboard</a>
+
+<script src="{{ url_for('static', filename='js/language.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>
