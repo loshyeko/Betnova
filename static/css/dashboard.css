@@ -7,13 +7,32 @@ body{
     color:#fff;
 }
 
-.top-bar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    background:#111827;
-    padding:12px 16px;
-    border-bottom:1px solid #1d2433;
+/* Fixed header */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    z-index: 1000;
+    background: #12192b;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+}
+
+.page-content {
+    margin-top: 80px;
+    padding-bottom: 80px;
+    overflow-y: auto;
+}
+
+/* Push page content below the fixed header */
+.dashboard-content,
+.main-content,
+.content {
+    padding-top: 90px;
 }
 
 .logo-img{
@@ -85,42 +104,26 @@ body{
 }
 
 .match-card{
-    background:#fff;
-    color:#000;
-    margin:14px;
+    padding:16px;
     border-radius:18px;
-    padding:18px;
+    margin-bottom:12px;
+}
+
+.teams{
+    margin:10px 0;
 }
 
 .odds-row{
-    display:flex;
     gap:10px;
-    margin-top:15px;
 }
 
 .odd{
-    flex:1;
-    background:#f5f5f5;
-    border-radius:12px;
-    text-align:center;
-    padding:16px;
-}
-
-.odd strong{
-    color:#16c35b;
-    font-size:28px;
+    height:82px;
 }
 
 .markets-btn{
-    width:100%;
-    margin-top:16px;
-    border:none;
-    background:#111827;
-    color:#fff;
-    border-radius:12px;
-    padding:16px;
-    font-size:18px;
-    font-weight:bold;
+    height:52px;
+    margin-top:12px;
 }
 
 .bottom-nav{
@@ -141,4 +144,16 @@ body{
 
 .bottom-nav .active{
     color:#16c35b;
+}
+
+
+.odd.selected{
+    background:#16c35b;
+    color:#fff;
+    border:2px solid #fff;
+    transition:.2s;
+}
+
+.odd.selected strong{
+    color:#fff;
 }
