@@ -1,50 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-    <title>Account - BetNova</title>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<title>My Account</title>
 
-    <link rel="stylesheet"
-    href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
 <body>
 
-<div class="account-container">
+<header class="topbar">
 
-    <h2>My Account</h2>
+<a href="/dashboard" class="back-btn">
+← Back
+</a>
 
-    <div class="account-card">
+<h2>My Account</h2>
 
-        <p><strong>Phone:</strong> {{ phone }}</p>
+</header>
 
-        <p><strong>Balance:</strong> {{ currency }} {{ "{:,.2f}".format(balance|float) }}</p>
+<div class="page-content">
 
-    </div>
+<div class="deposit-card">
 
-    <a href="/my_bets" class="account-btn">
-        🎟 My Bets
-    </a>
+<div class="balance-display">
 
-    <a href="/deposit">Deposit</a>
-    </a>
-
-    <a href="/withdraw" class="account-btn">
-        💸 Withdraw
-    </a>
-
-    <a href="/logout" class="account-btn logout">
-        🚪 Logout
-    </a>
+{{ currency }} {{ balance }}
 
 </div>
-<script src="{{ url_for('static', filename='js/language.js') }}"></script>
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+<p>{{ phone }}</p>
+
+</div>
+
+<div class="deposit-card">
+
+<a href="/betslip" class="account-item">
+<i class="fa-solid fa-ticket"></i>
+<span>My Bets</span>
+<i class="fa-solid fa-chevron-right"></i>
+</a>
+
+<a href="/deposit" class="account-item">
+<i class="fa-solid fa-wallet"></i>
+<span>Deposit</span>
+<i class="fa-solid fa-chevron-right"></i>
+</a>
+
+<a href="/withdraw" class="account-item">
+<i class="fa-solid fa-money-bill-transfer"></i>
+<span>Withdraw</span>
+<i class="fa-solid fa-chevron-right"></i>
+</a>
+
+<a href="/logout" class="account-item">
+<i class="fa-solid fa-right-from-bracket"></i>
+<span>Logout</span>
+<i class="fa-solid fa-chevron-right"></i>
+</a>
+
+</div>
+
+</div>
 
 </body>
 

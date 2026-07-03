@@ -63,7 +63,7 @@ def dashboard():
     elif country == "256":
         currency = "UGX"
     elif country == "243":
-        currency = "CDF"
+        currency = "FC"
     else:
         currency = "USD"
 

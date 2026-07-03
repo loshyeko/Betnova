@@ -706,3 +706,73 @@ body{
     color:black;
     cursor:pointer;
 }
+
+.page-content{
+padding:90px 15px 30px;
+}
+
+.deposit-card{
+background:#171717;
+border-radius:14px;
+padding:18px;
+margin-bottom:18px;
+}
+
+.balance-display{
+font-size:28px;
+font-weight:bold;
+color:#25d366;
+margin-top:10px;
+}
+
+.deposit-card label{
+display:block;
+margin-top:15px;
+margin-bottom:6px;
+font-weight:bold;
+}
+
+.deposit-card input{
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+font-size:16px;
+margin-bottom:15px;
+box-sizing:border-box;
+}
+
+.deposit-btn{
+width:100%;
+padding:15px;
+background:#25d366;
+border:none;
+border-radius:10px;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.account-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 0;
+text-decoration:none;
+color:white;
+border-bottom:1px solid #2a2a2a;
+font-size:17px;
+}
+
+.account-item:last-child{
+border-bottom:none;
+}
+
+.account-item span{
+flex:1;
+margin-left:15px;
+}
+
+.account-item i:last-child{
+color:#888;
+}
