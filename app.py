@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify, 
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from translations import translations
-from database import get_connection, get_match, get_matches,create_user, get_user, get_all_matches, get_markets, save_bet, update_balance, get_balance
+from database import get_connection, get_match, get_matches,create_user, get_user, get_all_matches, get_markets, save_bet, update_balance, get_balance, save_deposit, deposit_exists
 from auth import hash_password, verify_password
 import requests
 import uuid
@@ -305,6 +305,82 @@ def deposit():
         phone=user[2]
     )
 
+@app.route("/deposit/confirm")
+def deposit_confirm():
+
+    phone = session.get("phone")
+
+    if not phone:
+        return redirect("/login")
+
+    try:
+        amount = float(request.args.get("amount"))
+    except (TypeError, ValueError):
+        return "Invalid amount", 400
+
+    if amount <= 0:
+        return "Invalid amount", 400
+
+    token = get_pesapal_token()
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    }
+
+    merchant_reference = phone
+
+    payload = {
+        "id": merchant_reference,
+        "currency": "KES",
+        "amount": amount,
+        "description": "BetNova Wallet Deposit",
+        "callback_url": "https://http://www.betnova.lol/pesapal/callback",
+        "notification_id": PESAPAL_IPN_ID,
+        "billing_address": {
+            "phone_number": phone
+        }
+    }   
+
+    response = requests.post(
+        "https://pay.pesapal.com/v3/api/Transactions/SubmitOrderRequest",
+        json=payload,
+        headers=headers
+    )
+
+    data = response.json()
+
+    return redirect(data["redirect_url"])
+
+@app.route("/pesapal/callback")
+def pesapal_callback():
+
+    order_tracking_id = request.args.get("OrderTrackingId")
+
+    token = get_pesapal_token()
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/json"
+    }
+
+    response = requests.get(
+        f"https://pay.pesapal.com/v3/api/Transactions/GetTransactionStatus?orderTrackingId={order_tracking_id}",
+        headers=headers
+    )
+
+    data = response.json()
+
+    if data["payment_status_description"] == "Completed":
+        amount = float(data["amount"])
+        phone = session["phone"]
+
+        balance = get_balance(phone)
+        update_balance(phone, balance + amount)
+
+    return redirect("/account")
+
 @app.route("/logout")
 def logout():
 
@@ -442,7 +518,73 @@ def dice():
 
 @app.route("/crash")
 def crash():
-    return render_template("crash.html")    
+    return render_template("crash.html")
+
+
+  @app.route("/pesapal/ipn", methods=["GET", "POST"])
+def pesapal_ipn():
+
+    order_tracking_id = (
+        request.args.get("OrderTrackingId")
+        or request.form.get("OrderTrackingId")
+    )
+
+    merchant_reference = (
+        request.args.get("OrderMerchantReference")
+        or request.form.get("OrderMerchantReference")
+    )
+
+    if not order_tracking_id:
+        return jsonify({
+            "status": "error",
+            "message": "Missing OrderTrackingId"
+        }), 400
+
+    token = get_pesapal_token()
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/json"
+    }
+
+    response = requests.get(
+        f"{PESAPAL_BASE_URL}/api/Transactions/GetTransactionStatus?orderTrackingId={order_tracking_id}",
+        headers=headers
+    )
+
+    payment = response.json()
+
+    if payment.get("payment_status_description") != "Completed":
+        return jsonify({
+            "status": "pending"
+        }), 200
+
+    # Prevent duplicate wallet credit
+    if deposit_exists(order_tracking_id):
+        return jsonify({
+            "status": "success",
+            "message": "Deposit already processed."
+        }), 200
+
+    phone = merchant_reference
+    amount = float(payment["amount"])
+
+    current_balance = get_balance(phone)
+
+    update_balance(phone, current_balance + amount)
+
+    save_deposit(
+        phone=phone,
+        merchant_reference=merchant_reference,
+        order_tracking_id=order_tracking_id,
+        amount=amount,
+        payment_status="Completed"
+    )
+
+    return jsonify({
+        "status": "success",
+        "message": "Wallet credited successfully."
+    }), 200
 
 if __name__== "__main__":
     app.run(host="127.0.0.1", 

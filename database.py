@@ -408,4 +408,54 @@ def get_balance(phone):
     if result:
         return float(result[0])
 
-    return 0.0        
+    return 0.0 
+
+def save_deposit(
+    phone,
+    merchant_reference,
+    order_tracking_id,
+    amount,
+    payment_status
+):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        INSERT INTO deposits
+        (
+            phone,
+            merchant_reference,
+            order_tracking_id,
+            amount,
+            payment_status
+        )
+        VALUES (%s,%s,%s,%s,%s)
+        ON CONFLICT (order_tracking_id)
+        DO NOTHING
+    """, (
+        phone,
+        merchant_reference,
+        order_tracking_id,
+        amount,
+        payment_status
+    ))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def deposit_exists(order_tracking_id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        "SELECT 1 FROM deposits WHERE order_tracking_id=%s",
+        (order_tracking_id,)
+    )
+
+    exists = cur.fetchone() is not None
+
+    cur.close()
+    conn.close()
+
+    return exists   
