@@ -88,9 +88,35 @@ function updateBetSlip() {
 
     const stake = stakeInput ? parseFloat(stakeInput.value) || 0 : 0;
 
-    if (potentialWin)
-        potentialWin.textContent =
-            currency + " " + formatMoney(stake * total);
+    const bonusElement = document.getElementById("win-bonus");
+const payoutElement = document.getElementById("payout");
+
+const potential = stake * total;
+
+// Bonus rules
+let bonusPercent = 0;
+
+if (selections.length >= 10) {
+    bonusPercent = 20;
+} else if (selections.length >= 5) {
+    bonusPercent = 10;
+} else if (selections.length >= 3) {
+    bonusPercent = 5;
+} else if (selections.length >= 2) {
+    bonusPercent = 2;
+}
+
+const bonus = potential * (bonusPercent / 100);
+const payout = potential + bonus;
+
+if (potentialWin)
+    potentialWin.textContent = formatMoney(potential);
+
+if (bonusElement)
+    bonusElement.textContent = formatMoney(bonus);
+
+if (payoutElement)
+    payoutElement.textContent = formatMoney(payout);
 
 }
 

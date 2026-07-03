@@ -64,61 +64,62 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     <button>Ligue 1</button>
 </div>
 
-<!-- Match Card -->
+{% for match in matches %}
+
 <div class="match-card">
 
     <div class="match-header">
-        <span>🇬🇧 Premier League</span>
-        <span>15:00</span>
+        <span>{{ match.league }}</span>
+        <span>{{ match.time }}</span>
     </div>
 
-    <h3>Arsenal vs Chelsea</h3>
+    <h3>{{ match.home }} vs {{ match.away }}</h3>
 
-    <div class="odds-row">
-
-     <button class="odd"
-    
     <button class="odd"
 onclick="addToBet(
-1,
-'Arsenal vs Chelsea',
+'{{ match.id }}',
+'{{ match.home }} vs {{ match.away }}',
 'Match Winner',
 'Home',
-2.15
+'{{ match.home_odds }}'
 )">
     <span>1</span>
-    <strong>2.15</strong>
+    <strong>{{ match.home_odds }}</strong>
 </button>
 
-        <button class="odd"
+<button class="odd"
 onclick="addToBet(
-1,
-'Arsenal vs Chelsea',
+'{{ match.id }}',
+'{{ match.home }} vs {{ match.away }}',
 'Match Winner',
 'Draw',
-3.40
+'{{ match.draw_odds }}'
 )">
     <span>X</span>
-    <strong>3.40</strong>
+    <strong>{{ match.draw_odds }}</strong>
 </button>
 
-      <button class="odd"
+<button class="odd"
 onclick="addToBet(
-1,
-'Arsenal vs Chelsea',
+'{{ match.id }}',
+'{{ match.home }} vs {{ match.away }}',
 'Match Winner',
 'Away',
-3.10
+'{{ match.away_odds }}'
 )">
     <span>2</span>
-    <strong>3.10</strong>
-</button>  
+    <strong>{{ match.away_odds }}</strong>
+</button>
 
-    </div>
+    ...
 
-    <button class="markets-btn">
+    <a href="/match/{{ match.id }}" class="markets-btn">
         +85 Markets
-    </button>
+    </a>
+
+</div>
+
+{% endfor %}
 
 </div>
 
