@@ -1,9 +1,47 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, 
 from translations import translations
 from database import get_connection, get_match, get_matches,create_user, get_user, get_all_matches, get_markets, save_bet, update_balance, get_balance
 from auth import hash_password, verify_password
+import requests
+import uuid
+
+PESAPAL_CONSUMER_KEY =
+"mBtHTkpEO3JtHyDJr33oi+jLaHK5ZTvH"
+PESAPAL_CONSUMER_SECRET =
+"0tjx3NbCqQAOFBpyXEPC/+5BOhY="
+
+PESAPAL_BASE_URL = "https://pay.pesapal.com/v3"
+
+def get_pesapal_token():
+    url = f"{PESAPAL_BASE_URL}/api/Auth/RequestToken"
+
+    payload = {
+        "consumer_key": PESAPAL_CONSUMER_KEY,
+        "consumer_secret": PESAPAL_CONSUMER_SECRET
+    }
+
+    response = requests.post(url, json=payload)
+    response.raise_for_status()
+
+    return response.json()["token"]
 
 app = Flask(__name__)
+
+@app.route("/pesapal/list-ipns")
+def list_ipns():
+    token = get_pesapal_token()
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/json"
+    }
+
+    response = requests.get(
+        "https://pay.pesapal.com/v3/api/URLSetup/GetIpnList",
+        headers=headers
+    )
+
+    return response.text
 
 def get_text():
 
