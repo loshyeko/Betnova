@@ -14,15 +14,20 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 </head>
 
-<!-- TOP BAR -->
 <header class="top-bar">
 
     <a href="/dashboard" class="logo">
-       <img src="{{ url_for('static', filename='images/logo.png') }}" alt="BetNova" class="logo-img"> 
+        <img src="{{ url_for('static', filename='images/logo.png') }}">
     </a>
 
     <div class="wallet-section">
-        <span class="balance">{{ currency }} {{ balance }}</span>
+        <div class="balance-box">
+            <span id="balance">{{ currency }} {{ balance }}</span>
+
+            <button id="toggle-balance">
+                <i class="fa-solid fa-eye"></i>
+            </button>
+        </div>
 
         <a href="/deposit" class="deposit-btn">
             Deposit
@@ -31,11 +36,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 </header>
 
-<div class="page-content">
-
-<section class="promo-banner">
-    <p>🎁 Welcome Bonus • BetNova Promotions</p>
-</section>
+<div class="promo-bar">
+    🎁 Upto 50% Deposit Bonus • BetNova Promotions
+</div>
 
 <section class="search-area">
     <input
