@@ -1,76 +1,120 @@
-/* ===== MOBILE HEADER ===== */
+/* Sports Tabs */
 
-body{
-    margin:0;
-    background:#f4f4f4;
-    font-family:Arial, Helvetica, sans-serif;
-}
-
-.topbar{
-    height:60px;
-    background:#111827;
+.sports-tabs{
     display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 15px;
-    position:sticky;
-    top:0;
-    z-index:1000;
+    overflow-x:auto;
+    gap:10px;
+    padding:15px;
+    scrollbar-width:none;
 }
 
-.menu-btn{
-    background:none;
+.sports-tabs::-webkit-scrollbar{
+    display:none;
+}
+
+.sports-tabs button{
+    white-space:nowrap;
     border:none;
-    color:#fff;
-    font-size:24px;
-    cursor:pointer;
+    background:#222;
+    color:white;
+    padding:10px 18px;
+    border-radius:25px;
+    font-weight:600;
 }
 
-.logo img{
-    height:38px;
+.sports-tabs .active{
+    background:#00c853;
 }
 
-.wallet-box{
+
+/* League Tabs */
+
+.league-tabs{
     display:flex;
-    align-items:center;
+    overflow-x:auto;
+    gap:10px;
+    padding:0 15px 15px;
+    scrollbar-width:none;
+}
+
+.league-tabs::-webkit-scrollbar{
+    display:none;
+}
+
+.league-tabs button{
+    white-space:nowrap;
+    border:1px solid #ddd;
+    background:white;
+    border-radius:20px;
+    padding:8px 16px;
+    font-weight:600;
+}
+
+.league-tabs .active{
+    background:#00c853;
+    color:white;
+    border:none;
+}
+
+
+/* Match Card */
+
+.match-card{
+    background:white;
+    margin:15px;
+    padding:15px;
+    border-radius:18px;
+    box-shadow:0 3px 10px rgba(0,0,0,.12);
+}
+
+.match-header{
+    display:flex;
+    justify-content:space-between;
+    color:#666;
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+.match-card h3{
+    margin:10px 0 18px;
+    font-size:20px;
+}
+
+.odds-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
     gap:10px;
 }
 
-.wallet-balance{
-    color:#fff;
-    font-size:14px;
-    font-weight:bold;
-}
-
-.deposit-btn{
-    background:#00b050;
-    color:#fff;
-    padding:8px 14px;
-    border-radius:6px;
-    text-decoration:none;
-    font-weight:bold;
-}
-
-.promo-banner{
-    margin:10px;
-    background:#00b050;
-    color:#fff;
-    border-radius:10px;
+.odd{
+    border:none;
+    background:#f4f4f4;
+    border-radius:12px;
     padding:14px;
-    text-align:center;
-    font-weight:bold;
+    cursor:pointer;
 }
 
-.search-area{
-    padding:10px;
+.odd span{
+    display:block;
+    color:#777;
+    font-size:13px;
 }
 
-.search-area input{
+.odd strong{
+    display:block;
+    margin-top:5px;
+    color:#00c853;
+    font-size:20px;
+}
+
+.markets-btn{
     width:100%;
-    height:45px;
-    border-radius:8px;
-    border:1px solid #ccc;
-    padding:0 15px;
+    margin-top:15px;
+    border:none;
+    background:#111827;
+    color:white;
+    padding:12px;
+    border-radius:12px;
     font-size:15px;
-    box-sizing:border-box;
+    font-weight:bold;
 }

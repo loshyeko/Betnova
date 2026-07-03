@@ -48,99 +48,60 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
 </section>
         
-<button onclick="filterSport('Football')">Football</button>
+<!-- Sports -->
+<div class="sports-tabs">
+    <button class="active">⚽ Football</button>
+    <button>🏀 Basketball</button>
+    <button>🎾 Tennis</button>
+    <button>🏐 Volleyball</button>
+    <button>🏏 Cricket</button>
+    <button>🎮 eSports</button>
+</div>
 
-<button onclick="filterSport('Basketball')">Basketball</button>
+<!-- Leagues -->
+<div class="league-tabs">
+    <button class="active">Premier League</button>
+    <button>La Liga</button>
+    <button>Serie A</button>
+    <button>Bundesliga</button>
+    <button>Ligue 1</button>
+</div>
 
-<button onclick="filterSport('Tennis')">Tennis</button>
-
-<button onclick="filterSport('Volleyball')">Volleyball</button>
-
-<button onclick="filterSport('Cricket')">Cricket</button>
-
-<button onclick="filterSport('eSports')">eSports</button>
-
-<section class="leagues">
-
-    <button onclick="filterLeague('Premier League')">Premier League</button>
-
-<button onclick="filterLeague('La Liga')">La Liga</button>
-
-<button onclick="filterLeague('Serie A')">Serie A</button>
-
-<button onclick="filterLeague('Bundesliga')">Bundesliga</button>
-
-<button onclick="filterLeague('Ligue 1')">Ligue 1</button>
-</section>
-
-
-<section class="matches-list">
-
-{% for match in matches %}
-
+<!-- Match Card -->
 <div class="match-card">
 
-    <div class="match-time">
-        {{ match[4].strftime("%H:%M") }} • {{ match[4].strftime("%a %d/%m") }}
+    <div class="match-header">
+        <span>🇬🇧 Premier League</span>
+        <span>15:00</span>
     </div>
 
-    <div class="teams">
-        <span class="home-team">{{ match[2] }}</span>
-        <span class="vs">vs</span>
-        <span class="away-team">{{ match[3] }}</span>
-    </div>
+    <h3>Arsenal vs Chelsea</h3>
 
-    <div class="league">
-        {{ match[1] }}
-    </div>
+    <div class="odds-row">
 
-    <div class="markets">
+        <button class="odd">
+            <span>1</span>
+            <strong>2.15</strong>
+        </button>
 
-      <button class="odd-btn"
-onclick="addToBet(
-'{{ match[0] }}',
-'{{ match[2] }} vs {{ match[3] }}',
-'1X2',
-'Home',
-'{{ match[5] }}'
-)">
-<div class="market-name">1</div>
-<div class="market-odd">{{ match[5] }}</div>
-</button>
+        <button class="odd">
+            <span>X</span>
+            <strong>3.40</strong>
+        </button>
 
-<button class="odd-btn"
-onclick="addToBet(
-'{{ match[0] }}',
-'{{ match[2] }} vs {{ match[3] }}',
-'1X2',
-'Draw',
-'{{ match[6] }}'
-)">
-<div class="market-name">X</div>
-<div class="market-odd">{{ match[6] }}</div>
-</button>
-
-<button class="odd-btn"
-onclick="addToBet(
-'{{ match[0] }}',
-'{{ match[2] }} vs {{ match[3] }}',
-'1X2',
-'Away',
-'{{ match[7] }}'
-)">
-<div class="market-name">2</div>
-<div class="market-odd">{{ match[7] }}</div>
-</button>
-
-    
-
-        <a href="/match/{{ match[0] }}" class="more-btn">
-            +66
-        </a>
+        <button class="odd">
+            <span>2</span>
+            <strong>3.10</strong>
+        </button>
 
     </div>
+
+    <button class="markets-btn">
+        +85 Markets
+    </button>
 
 </div>
+
 
 {% endfor %}
 
