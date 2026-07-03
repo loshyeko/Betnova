@@ -1,0 +1,76 @@
+/* ===== MOBILE HEADER ===== */
+
+body{
+    margin:0;
+    background:#f4f4f4;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.topbar{
+    height:60px;
+    background:#111827;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 15px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.menu-btn{
+    background:none;
+    border:none;
+    color:#fff;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.logo img{
+    height:38px;
+}
+
+.wallet-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.wallet-balance{
+    color:#fff;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.deposit-btn{
+    background:#00b050;
+    color:#fff;
+    padding:8px 14px;
+    border-radius:6px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.promo-banner{
+    margin:10px;
+    background:#00b050;
+    color:#fff;
+    border-radius:10px;
+    padding:14px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.search-area{
+    padding:10px;
+}
+
+.search-area input{
+    width:100%;
+    height:45px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    padding:0 15px;
+    font-size:15px;
+    box-sizing:border-box;
+}

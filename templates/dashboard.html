@@ -10,62 +10,42 @@
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 
 </head>
 
-<body>
-
 <header class="topbar">
 
+    <button class="menu-btn">
+        <i class="fas fa-bars"></i>
+    </button>
+
     <div class="logo">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="BetNova Logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="BetNova">
     </div>
 
-    <div class="language-selector">
-    <select id="language" onchange="changeLanguage(this.value)">
-        <option value="en">🇬🇧 English</option>
-        <option value="fr">🇨🇩 Français</option>
-    </select>
-</div>
+    <div class="wallet-box">
+        <div class="wallet-balance">
+            KSh {{ balance if balance else "0.00" }}
+        </div>
 
-    <nav class="menu-links">
-        <a href="/dashboard">Home</a>
-        <a href="/matches">Sports</a>
-        <a href="/live">Live</a>
-        <a href="/casino">Casino</a>
-        <a href="/promotions">Promotions</a>
-    </nav>
-
-    <div class="wallet-section">
-
-        <button class="eye-btn" id="toggle-balance">
-        <i class="fa-solid fa-eye"></i>
-        </button>
-
-        <span class="balance" id="balance">
-            {{ currency }} {{ balance }}
-        </span>
-
-        <button class="deposit-btn">
-            + Deposit
-        </button>
-
-        <a href="/account" class="profile-btn">
-            👤
+        <a href="/deposit" class="deposit-btn">
+            Deposit
         </a>
-
     </div>
 
 </header>
 
-<section class="banner">
+<section class="promo-banner">
+    <p>🎁 Welcome Bonus • BetNova Promotions</p>
+</section>
 
-    <h2data-lang="depositBonus">50% Deposit
-        Bonus</h2>
-
-    <p><span data-lang="upto">Up to</span> 
-        {{ currency }} 5000</p>
-
+<section class="search-area">
+    <input
+        type="text"
+        id="matchSearch"
+        placeholder="Search matches..."
+    >
 </section>
         
 <button onclick="filterSport('Football')">Football</button>
@@ -204,6 +184,7 @@ onclick="addToBet(
 
 <script src="{{ url_for('static', filename='js/language.js') }}"></script>
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 
 </body>
 </html>
