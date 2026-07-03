@@ -41,129 +41,142 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 </div>
 
 <section class="search-area">
-    <input
-        type="text"
-        id="matchSearch"
-        placeholder="Search matches..."
-    >
+    <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input
+            type="text"
+            id="matchSearch"
+            placeholder="Search matches, teams or leagues..."
+        >
+    </div>
 </section>
         
-<!-- Sports -->
-<div class="sports-tabs">
-    <button class="active">⚽ Football</button>
-    <button>🏀 Basketball</button>
-    <button>🎾 Tennis</button>
-    <button>🏐 Volleyball</button>
-    <button>🏏 Cricket</button>
-    <button>🎮 eSports</button>
-</div>
+<section class="sports-tabs">
 
-<!-- Leagues -->
-<div class="league-tabs">
-    <button class="active">Premier League</button>
-    <button>La Liga</button>
-    <button>Serie A</button>
-    <button>Bundesliga</button>
-    <button>Ligue 1</button>
-</div>
+    <button class="sport active">
+        ⚽ Football
+    </button>
+
+    <button class="sport">
+        🏀 Basketball
+    </button>
+
+    <button class="sport">
+        🎾 Tennis
+    </button>
+
+    <button class="sport">
+        🏐 Volleyball
+    </button>
+
+    <button class="sport">
+        🏏 Cricket
+    </button>
+
+    <button class="sport">
+        🎮 eSports
+    </button>
+
+    <button class="sport">
+        🎰 Casino
+    </button>
+
+</section>
+
+<section class="match-filter">
+
+    <button class="filter-btn active">
+        🔴 Live
+    </button>
+
+    <button class="filter-btn">
+        📅 Upcoming
+    </button>
+
+    <button class="filter-btn">
+        ⭐ Favorites
+    </button>
+
+</section>
+
+<button class="league active">Premier League</button>
+<button class="league">La Liga</button>
+<button class="league">Serie A</button>
+<button class="league">Bundesliga</button>
+<button class="league">Ligue 1</button>
+<button class="league">Champions League</button>
+<button class="league">Europa League</button>
+<button class="league">CAF Champions League</button>
+<button class="league">CAF Confederation
+     Cup</button>
 
 {% for match in matches %}
 
 <div class="match-card">
 
-    <div class="match-header">
-        <span>{{ match.league }}</span>
-        <span>{{ match.time }}</span>
+    <div class="match-time">
+        <span class="kickoff">{{ match[4].strftime("%H:%M") }}</span>
+        <span class="match-date">{{ match[4].strftime("%a %d/%m") }}</span>
     </div>
 
-    <h3>{{ match.home }} vs {{ match.away }}</h3>
+    <div class="match-teams">
+        <div class="home-team">{{ match[2] }}</div>
+        <div class="away-team">{{ match[3] }}</div>
+    </div>
 
-    <button class="odd"
-onclick="addToBet(
-'{{ match.id }}',
-'{{ match.home }} vs {{ match.away }}',
-'Match Winner',
-'Home',
-'{{ match.home_odds }}'
-)">
-    <span>1</span>
-    <strong>{{ match.home_odds }}</strong>
-</button>
+    <div class="league-name">
+        {{ match[1] }}
+    </div>
 
-<button class="odd"
-onclick="addToBet(
-'{{ match.id }}',
-'{{ match.home }} vs {{ match.away }}',
-'Match Winner',
-'Draw',
-'{{ match.draw_odds }}'
-)">
-    <span>X</span>
-    <strong>{{ match.draw_odds }}</strong>
-</button>
+    <div class="markets">
 
-<button class="odd"
-onclick="addToBet(
-'{{ match.id }}',
-'{{ match.home }} vs {{ match.away }}',
-'Match Winner',
-'Away',
-'{{ match.away_odds }}'
-)">
-    <span>2</span>
-    <strong>{{ match.away_odds }}</strong>
-</button>
+    <button class="odd-btn"
+    onclick="addToBet('{{ match[0] }}',
+    '{{ match[2] }} vs {{ match[3] }}',
+    'Home',
+    '{{ match[5] }}')">
 
-    ...
+        <div class="market-name">1</div>
+        <div class="market-odd">{{ match[5] }}</div>
 
-    <a href="/match/{{ match.id }}" class="markets-btn">
-        +85 Markets
+    </button>
+
+    <button class="odd-btn"
+    onclick="addToBet('{{ match[0] }}',
+    '{{ match[2] }} vs {{ match[3] }}',
+    'Draw',
+    '{{ match[6] }}')">
+
+        <div class="market-name">X</div>
+        <div class="market-odd">{{ match[6] }}</div>
+
+    </button>
+
+    <button class="odd-btn"
+    onclick="addToBet('{{ match[0] }}',
+    '{{ match[2] }} vs {{ match[3] }}',
+    'Away',
+    '{{ match[7] }}')">
+
+        <div class="market-name">2</div>
+        <div class="market-odd">{{ match[7] }}</div>
+
+    </button>
+
+    <a href="/match/{{ match[0] }}" class="more-btn">
+
+        <span>+85</span>
+
+        <small>Markets</small>
+
     </a>
 
 </div>
 
 {% endfor %}
 
-</div>
-
-</section>
-
-
-</div>
-
-</div>
-
 <nav class="bottom-nav">
-
-    <a href="/dashboard" class="nav-item active">
-        <i class="fa-solid fa-house nav-icon"></i>
-        <span class="nav-text"
-        data-lang="home">Home</span>
-    </a>
-
-    <a href="/dashboard" class="nav-item">
-        <i class="fa-solid fa-futbol nav-icon"></i>
-        <span class="nav-text" 
-        data-lang="sports">Sports</span>
-    </a>
-
-    <a href="/betslip" class="nav-item betslip-nav">
-    <div class="bet-icon-wrapper">
-        <i class="fa-solid fa-ticket nav-icon"></i>
-        <span id="bet-count" class="bet-badge">0</span>
-    </div>
-
-    <span class="nav-text" 
-    data-lang="betslip">Bet Slip</span>
-</a>
-
-
-    <a href="/account" class="nav-item">
-        <i class="fa-solid fa-user nav-icon"></i>
-        <span class="nav-text"
-        data-lang="account">Account</span>
-    </a>
-
+    ...
 </nav>
 
 <script src="{{ url_for('static', filename='js/language.js') }}"></script>

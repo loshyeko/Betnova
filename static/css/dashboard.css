@@ -7,123 +7,198 @@ body{
     color:#fff;
 }
 
-/* Fixed header */
-.top-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    z-index: 1000;
-    background: #12192b;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
+.top-bar{
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    background:#141b2d;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:12px 15px;
 }
 
-.page-content {
-    margin-top: 80px;
-    padding-bottom: 80px;
-    overflow-y: auto;
-}
-
-/* Push page content below the fixed header */
-.dashboard-content,
-.main-content,
-.content {
-    padding-top: 90px;
-}
-
-.logo-img{
-    height:54px;
-    width:auto;
+.logo img{
+    width:55px;
 }
 
 .wallet-section{
     display:flex;
     align-items:center;
-    gap:14px;
+    gap:12px;
 }
 
-.balance{
+.balance-box{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
     color:#fff;
-    font-size:20px;
-    font-weight:700;
-    white-space:nowrap;
+
+    font-size:24px;
+    font-weight:bold;
 }
 
 .deposit-btn{
-    background:#18c964;
-    color:#fff;
+
+    background:#25d366;
+
+    color:white;
+
     padding:12px 22px;
-    border-radius:12px;
+
+    border-radius:14px;
+
     text-decoration:none;
-    font-weight:700;
+
+    font-weight:bold;
 }
 
-.deposit-btn:hover{
-    background:#11a84d;
+.promo-bar{
+
+    position:sticky;
+    top:79px;
+
+    z-index:999;
+
+    background:#22c55e;
+
+    color:white;
+
+    text-align:center;
+
+    padding:10px;
+
+    font-weight:bold;
 }
 
-.promo-banner{
-    margin:12px;
-    padding:14px;
-    background:#0c0d10;
-    border-radius:12px;
-}
-
-.search-box{
-    margin:12px;
-}
-
-.search-box input{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:12px;
-    font-size:16px;
-}
-
-.sports-tabs,
-.league-tabs{
-    display:flex;
-    overflow-x:auto;
-    gap:10px;
+.search-area{
     padding:12px;
 }
 
-.sports-tabs button,
-.league-tabs button{
+.search-box{
+    display:flex;
+    align-items:center;
+    background:#1d2230;
+    border-radius:12px;
+    padding:12px 15px;
+}
+
+.search-box i{
+    color:#9ca3af;
+    margin-right:10px;
+}
+
+.search-box input{
+    flex:1;
+    background:transparent;
     border:none;
-    border-radius:25px;
-    padding:12px 20px;
+    outline:none;
+    color:#fff;
     font-size:15px;
+}
+
+.search-box input::placeholder{
+    color:#9ca3af;
+}
+
+.sports-tabs{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding:12px;
+    scrollbar-width:none;
+}
+
+.sports-tabs::-webkit-scrollbar{
+    display:none;
+}
+
+.sport{
+    flex:0 0 auto;
+    padding:12px 20px;
+    border:none;
+    border-radius:30px;
+    background:#1d2230;
+    color:#fff;
     font-weight:600;
     white-space:nowrap;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.sport.active{
+    background:#22c55e;
+    color:#fff;
 }
 
 .match-card{
-    padding:16px;
-    border-radius:18px;
-    margin-bottom:12px;
+    background:#171b26;
+    border-radius:14px;
+    margin:12px;
+    padding:14px;
+}
+
+.match-header{
+    display:flex;
+    justify-content:space-between;
+    color:#8f9aad;
+    font-size:13px;
+    margin-bottom:10px;
 }
 
 .teams{
-    margin:10px 0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    color:#fff;
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:15px;
 }
 
 .odds-row{
-    gap:10px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
 }
 
 .odd{
-    height:82px;
+    background:#242c3d;
+    border:none;
+    border-radius:10px;
+    padding:12px;
+    color:#fff;
+    cursor:pointer;
+}
+
+.odd span{
+    display:block;
+    font-size:13px;
+    color:#9ca3af;
+}
+
+.odd strong{
+    display:block;
+    font-size:18px;
+    margin-top:5px;
 }
 
 .markets-btn{
-    height:52px;
+    display:block;
     margin-top:12px;
+    text-align:center;
+    padding:10px;
+    border-radius:10px;
+    background:#22c55e;
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
 }
 
 .bottom-nav{
@@ -156,4 +231,167 @@ body{
 
 .odd.selected strong{
     color:#fff;
+}
+
+.league-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    max-height:220px;
+    overflow-y:auto;
+    padding:12px;
+}
+
+.league{
+    width:100%;
+    background:#1d2230;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:14px;
+    text-align:left;
+    font-weight:600;
+}
+
+.league.active{
+    background:#22c55e;
+}
+
+.match-filter{
+    display:flex;
+    gap:10px;
+    padding:12px;
+    overflow-x:auto;
+    scrollbar-width:none;
+}
+
+.match-filter::-webkit-scrollbar{
+    display:none;
+}
+
+.filter-btn{
+    flex:0 0 auto;
+    padding:10px 18px;
+    border:none;
+    border-radius:25px;
+    background:#1d2230;
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.filter-btn.active{
+    background:#22c55e;
+}
+
+/* Match Card */
+
+.match-card{
+    background:#171c28;
+    border-radius:14px;
+    padding:14px;
+    margin:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+
+.match-time{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.kickoff{
+    color:#22c55e;
+    font-size:16px;
+    font-weight:700;
+}
+
+.match-date{
+    color:#9ca3af;
+    font-size:13px;
+}
+
+.match-teams{
+    text-align:center;
+    color:#ffffff;
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:6px;
+}
+
+.vs{
+    color:#9ca3af;
+    font-weight:500;
+    margin:0 6px;
+}
+
+.league-name{
+    text-align:center;
+    color:#7d8798;
+    font-size:13px;
+    margin-bottom:14px;
+}
+
+.markets{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    margin-top:12px;
+}
+
+.odd-btn{
+    background:#232b3b;
+    border:none;
+    border-radius:10px;
+    padding:12px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.odd-btn:hover{
+    background:#2f3a4d;
+}
+
+.market-name{
+    color:#9ca3af;
+    font-size:13px;
+    margin-bottom:4px;
+}
+
+.market-odd{
+    color:#ffffff;
+    font-size:18px;
+    font-weight:700;
+}
+
+.more-btn{
+    background:#22c55e;
+    color:#ffffff;
+    border-radius:10px;
+    text-decoration:none;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    min-height:72px;
+    font-weight:700;
+    transition:.2s;
+}
+
+.more-btn:hover{
+    background:#16a34a;
+}
+
+.more-btn span{
+    font-size:18px;
+    line-height:1;
+}
+
+.more-btn small{
+    font-size:11px;
+    margin-top:4px;
+    line-height:1;
 }

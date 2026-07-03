@@ -5,40 +5,18 @@ body{
     font-family:Arial,Helvetica,sans-serif;
 }
 
-.top-bar{
-    position:sticky;
-    top:0;
-    z-index:1000;
-
-    background:#141b2d;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:12px 15px;
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
-.logo img{
-    width:55px;
-}
-
-.wallet-section{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.balance-box{
-
-    display:flex;
-    align-items:center;
-    gap:8px;
-
-    color:#fff;
-
-    font-size:24px;
-    font-weight:bold;
+.page-content {
+    margin-top: 80px;
+    padding-bottom: 80px;
+    overflow-y: auto;
 }
 
 .deposit-btn{
@@ -46,32 +24,6 @@ body{
     background:#25d366;
 
     color:white;
-
-    padding:12px 22px;
-
-    border-radius:14px;
-
-    text-decoration:none;
-
-    font-weight:bold;
-}
-
-.promo-bar{
-
-    position:sticky;
-    top:79px;
-
-    z-index:999;
-
-    background:#22c55e;
-
-    color:white;
-
-    text-align:center;
-
-    padding:10px;
-
-    font-weight:bold;
 }
 
 .menu-links{
