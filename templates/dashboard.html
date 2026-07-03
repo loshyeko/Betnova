@@ -14,20 +14,15 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 </head>
 
-<header class="topbar">
+<!-- TOP BAR -->
+<header class="top-bar">
 
-    <button class="menu-btn">
-        <i class="fas fa-bars"></i>
-    </button>
+    <a href="/dashboard" class="logo">
+       <img src="{{ url_for('static', filename='images/logo.png') }}" alt="BetNova" class="logo-img"> 
+    </a>
 
-    <div class="logo">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="BetNova">
-    </div>
-
-    <div class="wallet-box">
-        <div class="wallet-balance">
-            KSh {{ balance if balance else "0.00" }}
-        </div>
+    <div class="wallet-section">
+        <span class="balance">KSh {{ balance }}</span>
 
         <a href="/deposit" class="deposit-btn">
             Deposit

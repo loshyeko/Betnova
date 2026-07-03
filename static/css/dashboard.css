@@ -1,120 +1,144 @@
-/* Sports Tabs */
+/* Dashboard */
 
-.sports-tabs{
+body{
+    margin:0;
+    background:#0f1014;
+    font-family:Arial,sans-serif;
+    color:#fff;
+}
+
+.top-bar{
     display:flex;
-    overflow-x:auto;
-    gap:10px;
-    padding:15px;
-    scrollbar-width:none;
+    align-items:center;
+    justify-content:space-between;
+    background:#111827;
+    padding:12px 16px;
+    border-bottom:1px solid #1d2433;
 }
 
-.sports-tabs::-webkit-scrollbar{
-    display:none;
+.logo-img{
+    height:54px;
+    width:auto;
 }
 
-.sports-tabs button{
+.wallet-section{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.balance{
+    color:#fff;
+    font-size:20px;
+    font-weight:700;
     white-space:nowrap;
+}
+
+.deposit-btn{
+    background:#18c964;
+    color:#fff;
+    padding:12px 22px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+}
+
+.deposit-btn:hover{
+    background:#11a84d;
+}
+
+.promo-banner{
+    margin:12px;
+    padding:14px;
+    background:#0c0d10;
+    border-radius:12px;
+}
+
+.search-box{
+    margin:12px;
+}
+
+.search-box input{
+    width:100%;
+    padding:14px;
     border:none;
-    background:#222;
-    color:white;
-    padding:10px 18px;
-    border-radius:25px;
-    font-weight:600;
+    border-radius:12px;
+    font-size:16px;
 }
 
-.sports-tabs .active{
-    background:#00c853;
-}
-
-
-/* League Tabs */
-
+.sports-tabs,
 .league-tabs{
     display:flex;
     overflow-x:auto;
     gap:10px;
-    padding:0 15px 15px;
-    scrollbar-width:none;
+    padding:12px;
 }
 
-.league-tabs::-webkit-scrollbar{
-    display:none;
-}
-
+.sports-tabs button,
 .league-tabs button{
-    white-space:nowrap;
-    border:1px solid #ddd;
-    background:white;
-    border-radius:20px;
-    padding:8px 16px;
-    font-weight:600;
-}
-
-.league-tabs .active{
-    background:#00c853;
-    color:white;
     border:none;
+    border-radius:25px;
+    padding:12px 20px;
+    font-size:15px;
+    font-weight:600;
+    white-space:nowrap;
 }
-
-
-/* Match Card */
 
 .match-card{
-    background:white;
-    margin:15px;
-    padding:15px;
+    background:#fff;
+    color:#000;
+    margin:14px;
     border-radius:18px;
-    box-shadow:0 3px 10px rgba(0,0,0,.12);
-}
-
-.match-header{
-    display:flex;
-    justify-content:space-between;
-    color:#666;
-    font-size:13px;
-    margin-bottom:10px;
-}
-
-.match-card h3{
-    margin:10px 0 18px;
-    font-size:20px;
+    padding:18px;
 }
 
 .odds-row{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
+    display:flex;
     gap:10px;
+    margin-top:15px;
 }
 
 .odd{
-    border:none;
-    background:#f4f4f4;
+    flex:1;
+    background:#f5f5f5;
     border-radius:12px;
-    padding:14px;
-    cursor:pointer;
-}
-
-.odd span{
-    display:block;
-    color:#777;
-    font-size:13px;
+    text-align:center;
+    padding:16px;
 }
 
 .odd strong{
-    display:block;
-    margin-top:5px;
-    color:#00c853;
-    font-size:20px;
+    color:#16c35b;
+    font-size:28px;
 }
 
 .markets-btn{
     width:100%;
-    margin-top:15px;
+    margin-top:16px;
     border:none;
     background:#111827;
-    color:white;
-    padding:12px;
+    color:#fff;
     border-radius:12px;
-    font-size:15px;
+    padding:16px;
+    font-size:18px;
     font-weight:bold;
+}
+
+.bottom-nav{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    background:#111827;
+    display:flex;
+    justify-content:space-around;
+    padding:12px 0;
+}
+
+.bottom-nav a{
+    color:#cfd3da;
+    text-decoration:none;
+}
+
+.bottom-nav .active{
+    color:#16c35b;
 }
