@@ -174,9 +174,26 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 </div>
 
 {% endfor %}
-
 <nav class="bottom-nav">
-    ...
+    <a href="/dashboard" class="nav-item active">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+
+    <a href="/sports" class="nav-item">
+        <i class="fa-solid fa-futbol"></i>
+        <span>Sports</span>
+    </a>
+
+    <a href="/betslip" class="nav-item">
+        <i class="fa-solid fa-ticket"></i>
+        <span>Bet Slip</span>
+    </a>
+
+    <a href="/account" class="nav-item">
+        <i class="fa-solid fa-user"></i>
+        <span>Account</span>
+    </a>
 </nav>
 
 <script src="{{ url_for('static', filename='js/language.js') }}"></script>
