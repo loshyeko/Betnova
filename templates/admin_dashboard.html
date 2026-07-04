@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BetNova Admin</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>BetNova</h2>
+
+<a href="/admin/dashboard">Dashboard</a>
+<a href="/admin/users">Users</a>
+<a href="/admin/deposits">Deposits</a>
+<a href="/admin/withdrawals">Withdrawals</a>
+<a href="/admin/matches">Matches</a>
+<a href="/admin/casino">Casino</a>
+<a href="/admin/reports">Reports</a>
+<a href="/admin/settings">Settings</a>
+<a href="/logout">Logout</a>
+
+</div>
+
+<div class="main">
+
+<div class="topbar">
+
+<h2>Admin Dashboard</h2>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+<h3>Total Users</h3>
+<h1>{{ total_users }}</h1>
+</div>
+
+<div class="card">
+<h3>Total Deposits</h3>
+<h1>KES {{ total_deposits }}</h1>
+</div>
+
+<div class="card">
+<h3>Total Withdrawals</h3>
+<h1>KES {{ total_withdrawals }}</h1>
+</div>
+
+<div class="card">
+<h3>Today's Profit</h3>
+<h1>KES {{ profit }}</h1>
+</div>
+
+</div>
+
+<h2>Recent Deposits</h2>
+
+<table>
+
+<tr>
+<th>Phone</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Date</th>
+</tr>
+
+{% for deposit in deposits %}
+
+<tr>
+
+<td>{{ deposit.phone }}</td>
+
+<td>{{ deposit.amount }}</td>
+
+<td>{{ deposit.status }}</td>
+
+<td>{{ deposit.date }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</body>
+</html>

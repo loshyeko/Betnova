@@ -2,13 +2,13 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from translations import translations
 from database import get_connection, get_match, get_matches,create_user, get_user, get_all_matches, get_markets, save_bet, update_balance, get_balance, save_deposit, deposit_exists
 from auth import hash_password, verify_password
+from werkzeug.security import check_password_hash
 import requests
 import uuid
 
-PESAPAL_CONSUMER_KEY =
-"mBtHTkpEO3JtHyDJr33oi+jLaHK5ZTvH"
-PESAPAL_CONSUMER_SECRET =
-"0tjx3NbCqQAOFBpyXEPC/+5BOhY="
+PESAPAL_CONSUMER_KEY = "mBtHTkpEO3JtHyDJr33oi+jLaHK5ZTvH"
+PESAPAL_CONSUMER_SECRET = "0tjx3NbCqQAOFBpyXEPC/+5BOhY="
+PESAPAL_IPN_ID = "983a6f54-b3ba-4965-8392-da61843d4435"
 
 PESAPAL_BASE_URL = "https://pay.pesapal.com/v3"
 
@@ -42,6 +42,67 @@ def list_ipns():
     )
 
     return response.text
+
+def get_balance(phone):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        "SELECT balance FROM users WHERE phone = %s",
+        (phone,)
+    )
+
+    row = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    if row:
+        return float(row[0])
+
+    return 0.0
+
+def update_balance(phone, new_balance):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        UPDATE users
+        SET balance = %s
+        WHERE phone = %s
+        """,
+        (new_balance, phone)
+    )
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def save_deposit(phone, merchant_reference, order_tracking_id, amount, payment_status):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        INSERT INTO deposits (
+            phone,
+            merchant_reference,
+            order_tracking_id,
+            amount,
+            payment_status
+        )
+        VALUES (%s, %s, %s, %s, %s)
+    """, (
+        phone,
+        merchant_reference,
+        order_tracking_id,
+        amount,
+        payment_status
+    ))
+
+    conn.commit()
+    cur.close()
+    conn.close()        
 
 def get_text():
 
@@ -93,6 +154,7 @@ def dashboard():
         return redirect("/login")
 
     matches = get_matches()
+    print(matches)
 
     if country == "254":
         currency = "KSh"
@@ -500,10 +562,6 @@ def slots():
 def blackjack():
     return render_template("blackjack.html")
 
-@app.route("/roulette")
-def roulette():
-    return render_template("roulette.html")
-
 @app.route("/baccarat")
 def baccarat():
     return render_template("baccarat.html")
@@ -521,7 +579,8 @@ def crash():
     return render_template("crash.html")
 
 
-  @app.route("/pesapal/ipn", methods=["GET", "POST"])
+@app.route("/pesapal/ipn",
+methods=["GET", "POST"])
 def pesapal_ipn():
 
     order_tracking_id = (
@@ -585,6 +644,293 @@ def pesapal_ipn():
         "status": "success",
         "message": "Wallet credited successfully."
     }), 200
+
+@app.route("/admin/login", 
+methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        conn = get_connection()
+        cur = conn.cursor()
+
+        cur.execute("""
+            SELECT username, password_hash, role, is_active
+            FROM admins
+            WHERE username = %s
+        """, (username,))
+
+        admin = cur.fetchone()
+
+        cur.close()
+        conn.close()
+
+        if admin and admin[3]:
+            if check_password_hash(admin[1], password):
+                session["admin"] = True
+                session["admin_username"] = admin[0]
+                session["admin_role"] = admin[2]
+                return redirect("/admin/dashboard")
+
+        return render_template(
+            "admin_login.html",
+            error="Invalid username or password"
+        )
+
+    return render_template("admin_login.html")
+
+@app.route("/admin/dashboard")
+def admin_dashboard():
+
+    if not session.get("admin"):
+        return redirect("/admin/login")
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    # Total users
+    cur.execute("SELECT COUNT(*) FROM users")
+    total_users = cur.fetchone()[0]
+
+    # Total completed deposits
+    cur.execute("""
+        SELECT COALESCE(SUM(amount),0)
+        FROM deposits
+        WHERE payment_status='completed'
+    """)
+    total_deposits = cur.fetchone()[0]
+
+    # Total withdrawals
+    cur.execute("""
+        SELECT COALESCE(SUM(amount),0)
+        FROM withdrawals
+        WHERE status='Approved'
+    """)
+    total_withdrawals = cur.fetchone()[0]
+
+    profit = total_deposits - total_withdrawals
+
+    cur.execute("""
+        SELECT
+            phone,
+            amount,
+            payment_status,
+            deposited_at
+        FROM deposits
+        ORDER BY deposited_at DESC
+        LIMIT 10
+    """)
+
+    rows = cur.fetchall()
+
+    deposits = []
+
+    for row in rows:
+        deposits.append({
+            "phone": row[0],
+            "amount": row[1],
+            "status": row[2],
+            "date": row[3]
+        })
+
+    cur.close()
+    conn.close()
+
+    return render_template(
+        "admin_dashboard.html",
+        total_users=total_users,
+        total_deposits=total_deposits,
+        total_withdrawals=total_withdrawals,
+        profit=profit,
+        deposits=deposits
+    )
+
+@app.route("/admin/matches/add", 
+methods=["GET", "POST"])
+def add_match():
+
+    if not session.get("admin"):
+        return redirect("/admin/login")
+
+    if request.method == "POST":
+
+        sport = request.form["sport"]
+        league = request.form["league"]
+        home_team = request.form["home_team"]
+        away_team = request.form["away_team"]
+        kickoff = request.form["match_time"]
+
+        home_odds = request.form["home_odds"]
+        draw_odds = request.form["draw_odds"]
+        away_odds = request.form["away_odds"]
+
+        conn = get_connection()
+        cur = conn.cursor()
+
+        cur.execute("""
+            INSERT INTO matches
+            (sport, league, home_team, away_team, kickoff,
+             home_odds, draw_odds, away_odds)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        """, (
+            sport,
+            league,
+            home_team,
+            away_team,
+            kickoff,
+            home_odds,
+            draw_odds,
+            away_odds
+        ))
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return redirect("/admin/dashboard")
+
+    return render_template("add_match.html")
+
+@app.route("/admin/matches")
+def admin_matches():
+
+    if not session.get("admin"):
+        return redirect("/admin/login")
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT id,
+               sport,
+               league,
+               home_team,
+               away_team,
+               kickoff,
+               status
+        FROM matches
+        ORDER BY kickoff ASC
+    """)
+
+    matches = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    return render_template(
+        "admin_matches.html",
+        matches=matches
+    )
+
+@app.route("/admin/matches/edit/<int:match_id>", 
+methods=["GET", "POST"])
+def edit_match(match_id):
+    if not session.get("admin"):
+        return redirect("/admin/login")
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    if request.method == "POST":
+        sport = request.form["sport"]
+        league = request.form["league"]
+        home_team = request.form["home_team"]
+        away_team = request.form["away_team"]
+        kickoff = request.form["kickoff"]
+        home_odds = request.form["home_odds"]
+        draw_odds = request.form["draw_odds"]
+        away_odds = request.form["away_odds"]
+        status = request.form["status"]
+
+        cur.execute("""
+            UPDATE matches
+            SET sport=%s,
+                league=%s,
+                home_team=%s,
+                away_team=%s,
+                kickoff=%s,
+                home_odds=%s,
+                draw_odds=%s,
+                away_odds=%s,
+                status=%s
+            WHERE id=%s
+        """, (
+            sport,
+            league,
+            home_team,
+            away_team,
+            kickoff,
+            home_odds,
+            draw_odds,
+            away_odds,
+            status,
+            match_id
+        ))
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return redirect("/admin/matches")
+
+    cur.execute("""
+        SELECT id,
+               sport,
+               league,
+               home_team,
+               away_team,
+               kickoff,
+               home_odds,
+               draw_odds,
+               away_odds,
+               status
+        FROM matches
+        WHERE id=%s
+    """, (match_id,))
+
+    row = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    if not row:
+        return "Match not found", 404
+
+    match = {
+        "id": row[0],
+        "sport": row[1],
+        "league": row[2],
+        "home_team": row[3],
+        "away_team": row[4],
+        "kickoff": row[5],
+        "home_odds": row[6],
+        "draw_odds": row[7],
+        "away_odds": row[8],
+        "status": row[9],
+    }
+
+    return render_template("edit_match.html", match=match)
+
+@app.route("/admin/matches/delete/<int:match_id>")
+def delete_match(match_id):
+    if not session.get("admin"):
+        return redirect("/admin/login")
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    # Delete all markets belonging to the match first
+    cur.execute("DELETE FROM markets WHERE match_id = %s", (match_id,))
+
+    # Delete the match
+    cur.execute("DELETE FROM matches WHERE id = %s", (match_id,))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return redirect("/admin/matches")
 
 if __name__== "__main__":
     app.run(host="127.0.0.1", 

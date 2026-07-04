@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Matches - BetNova Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+<h1>Matches</h1>
+
+<p>
+    <a href="/admin/matches/add">➕ Add Match</a>
+</p>
+
+<table border="1" cellpadding="8">
+
+<tr>
+    <th>ID</th>
+    <th>Sport</th>
+    <th>League</th>
+    <th>Home</th>
+    <th>Away</th>
+    <th>Kickoff</th>
+    <th>Status</th>
+    <th>Actions</th>
+</tr>
+
+{% for match in matches %}
+<tr>
+
+<td>{{ match[0] }}</td>
+<td>{{ match[1] }}</td>
+<td>{{ match[2] }}</td>
+<td>{{ match[3] }}</td>
+<td>{{ match[4] }}</td>
+<td>{{ match[5] }}</td>
+<td>{{ match[6] }}</td>
+
+<td>
+    <a href="/admin/matches/edit/{{ match[0] }}">Edit</a> |
+    <a href="/admin/matches/delete/{{ match[0] }}">Delete</a>
+</td>
+
+</tr>
+{% endfor %}
+
+</table>
+
+</body>
+</html>

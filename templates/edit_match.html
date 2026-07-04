@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Match - BetNova</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Edit Match</h2>
+
+    <form method="POST">
+
+        <label>Sport</label>
+        <input type="text" name="sport" value="{{ match.sport }}" required>
+
+        <label>League</label>
+        <input type="text" name="league" value="{{ match.league }}" required>
+
+        <label>Home Team</label>
+        <input type="text" name="home_team" value="{{ match.home_team }}" required>
+
+        <label>Away Team</label>
+        <input type="text" name="away_team" value="{{ match.away_team }}" required>
+
+        <label>Kickoff</label>
+        <input type="datetime-local"
+               name="kickoff"
+               value="{{ match.kickoff.strftime('%Y-%m-%dT%H:%M') }}"
+               required>
+
+        <label>Home Odds</label>
+        <input type="number" step="0.01" name="home_odds"
+               value="{{ match.home_odds }}" required>
+
+        <label>Draw Odds</label>
+        <input type="number" step="0.01" name="draw_odds"
+               value="{{ match.draw_odds }}" required>
+
+        <label>Away Odds</label>
+        <input type="number" step="0.01" name="away_odds"
+               value="{{ match.away_odds }}" required>
+
+        <label>Status</label>
+        <select name="status">
+            <option value="Upcoming"
+                {% if match.status=="Upcoming" %}selected{% endif %}>
+                Upcoming
+            </option>
+
+            <option value="Live"
+                {% if match.status=="Live" %}selected{% endif %}>
+                Live
+            </option>
+
+            <option value="Finished"
+                {% if match.status=="Finished" %}selected{% endif %}>
+                Finished
+            </option>
+
+            <option value="Cancelled"
+                {% if match.status=="Cancelled" %}selected{% endif %}>
+                Cancelled
+            </option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">Save Changes</button>
+
+        <a href="{{ url_for('admin_matches') }}">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

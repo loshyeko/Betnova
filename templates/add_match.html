@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Match - BetNova</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+<h1>Add Match</h1>
+
+<form method="POST">
+
+<label>Sport</label><br>
+<select name="sport">
+    <option>Football</option>
+    <option>Basketball</option>
+    <option>Tennis</option>
+    <option>Volleyball</option>
+</select>
+
+<br><br>
+
+<label>League</label><br>
+<input type="text" name="league" required>
+
+<br><br>
+
+<label>Home Team</label><br>
+<input type="text" name="home_team" required>
+
+<br><br>
+
+<label>Away Team</label><br>
+<input type="text" name="away_team" required>
+
+<br><br>
+
+<label>Kickoff Date & Time</label><br>
+<input type="datetime-local" name="match_time" required>
+
+<br><br>
+
+<h3>Main Odds</h3>
+
+Home Win
+<input type="number" step="0.01" name="home_odds">
+
+Draw
+<input type="number" step="0.01" name="draw_odds">
+
+Away Win
+<input type="number" step="0.01" name="away_odds">
+
+<br><br>
+
+<button type="submit">Publish Match</button>
+
+</form>
+
+</body>
+</html>
