@@ -113,92 +113,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
      <div class="matches-container">
 
 {% for match in matches %}
-
-<div class="match-card">
-
-    <div class="match-time">
-        <span class="kickoff">{{ match[4].strftime("%H:%M") }}</span>
-        <span class="match-date">{{ match[4].strftime("%a %d/%m") }}</span>
-    </div>
-
-    <div class="match-teams">
-        <div class="home-team">{{ match[2] }}</div>
-        <div class="away-team">{{ match[3] }}</div>
-    </div>
-
-    <div class="league-name">
-        {{ match[1] }}
-    </div>
-
-    <div class="markets">
-
-    <button class="odd-btn"
-    onclick="addToBet('{{ match[0] }}',
-    '{{ match[2] }} vs {{ match[3] }}',
-    'Home',
-    '{{ match[5] }}')">
-
-        <div class="market-name">1</div>
-        <div class="market-odd">{{ match[5] }}</div>
-
-    </button>
-
-    <button class="odd-btn"
-    onclick="addToBet('{{ match[0] }}',
-    '{{ match[2] }} vs {{ match[3] }}',
-    'Draw',
-    '{{ match[6] }}')">
-
-        <div class="market-name">X</div>
-        <div class="market-odd">{{ match[6] }}</div>
-
-    </button>
-
-    <button class="odd-btn"
-    onclick="addToBet('{{ match[0] }}',
-    '{{ match[2] }} vs {{ match[3] }}',
-    'Away',
-    '{{ match[7] }}')">
-
-        <div class="market-name">2</div>
-        <div class="market-odd">{{ match[7] }}</div>
-
-    </button>
-
-    <a href="/match/{{ match[0] }}" class="more-btn">
-
-        <span>+85</span>
-
-        <small>Markets</small>
-
-    </a>
-
-</div>
-
+    {% include "components/match_card.html" %}
 {% endfor %}
+
 </div>
-
-<nav class="bottom-nav">
-    <a href="/dashboard" class="nav-item active">
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span>
-    </a>
-
-    <a href="/sports" class="nav-item">
-        <i class="fa-solid fa-futbol"></i>
-        <span>Sports</span>
-    </a>
-
-    <a href="/betslip" class="nav-item">
-        <i class="fa-solid fa-ticket"></i>
-        <span>Bet Slip</span>
-    </a>
-
-    <a href="/account" class="nav-item">
-        <i class="fa-solid fa-user"></i>
-        <span>Account</span>
-    </a>
-</nav>
 
 <script src="{{ url_for('static', filename='js/language.js') }}"></script>
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>

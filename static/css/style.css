@@ -73,225 +73,7 @@ body{
     cursor:pointer;
 }
 
-.match-card{
 
-background:#181818;
-
-border-radius:15px;
-
-padding:18px;
-
-margin-bottom:15px;
-
-}
-
-.match-time{
-
-color:#9e9e9e;
-
-font-size:13px;
-
-margin-bottom:12px;
-
-}
-
-.teams{
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:22px;
-
-font-weight:bold;
-
-margin-bottom:10px;
-
-}
-
-.home-team{
-
-flex:1;
-
-text-align:right;
-
-}
-
-.away-team{
-
-flex:1;
-
-text-align:left;
-
-}
-
-.vs{
-
-margin:0 15px;
-
-color:#25d366;
-
-}
-
-.league{
-
-text-align:center;
-
-font-size:14px;
-
-color:#bbbbbb;
-
-margin-bottom:15px;
-
-}
-
-.markets{
-
-display:flex;
-
-gap:10px;
-
-}
-
-.odd-btn{
-
-flex:1;
-
-height:60px;
-
-background:#262626;
-
-border:none;
-
-color:white;
-
-border-radius:10px;
-
-font-size:18px;
-
-cursor:pointer;
-
-}
-
-.odd-btn:hover{
-
-background:#25d366;
-
-color:black;
-
-}
-
-.more-btn{
-
-width:60px;
-
-background:#101010;
-
-border:none;
-
-color:#25d366;
-
-font-size:26px;
-
-border-radius:10px;
-
-cursor:pointer;
-
-}
-
-.matches-list{
-    padding:20px;
-}
-
-.match-card{
-    background:#181818;
-    border-radius:12px;
-    padding:18px;
-    margin-bottom:18px;
-}
-
-.match-time{
-    color:#999;
-    font-size:13px;
-    margin-bottom:12px;
-}
-
-.teams{
-    text-align:center;
-    font-size:24px;
-    font-weight:bold;
-    margin-bottom:8px;
-}
-
-.vs{
-    color:#25d366;
-    margin:0 10px;
-}
-
-.league{
-    text-align:center;
-    color:#bdbdbd;
-    margin-bottom:18px;
-}
-
-.markets{
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr 60px;
-    gap:10px;
-}
-
-.odd-btn{
-    background:#252525;
-    border:none;
-    color:white;
-    border-radius:10px;
-    padding:10px;
-    cursor:pointer;
-}
-
-.market-name{
-    font-size:13px;
-    color:#999;
-}
-
-.market-odd{
-    font-size:20px;
-    font-weight:bold;
-}
-
-.more-btn{
-
-    width:70px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    background:#25d366;
-
-    color:black;
-
-    text-decoration:none;
-
-    border-radius:10px;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    transition:0.2s;
-
-}
-
-.more-btn:hover{
-
-    background:#1fb456;
-
-}
 
 .banner{
 
@@ -781,4 +563,87 @@ margin-left:15px;
 
 .account-item i:last-child{
 color:#888;
+}
+
+/* =========================
+   BETNOVA MATCH CARD
+========================= */
+
+.match-card{
+    background:#1f2430;
+    border-radius:12px;
+    padding:14px;
+    margin:12px 10px;
+    color:#fff;
+}
+
+.match-time{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.kickoff-time{
+    font-size:20px;
+    font-weight:bold;
+    color:#59ff59;
+}
+
+.kickoff-date{
+    font-size:13px;
+    color:#bfbfbf;
+}
+
+.match-game{
+    text-align:center;
+    margin:15px 0;
+}
+
+.team{
+    font-size:19px;
+    font-weight:bold;
+    margin:4px 0;
+}
+
+.vs{
+    color:#888;
+    font-size:13px;
+    margin:6px 0;
+}
+
+.match-league{
+    text-align:center;
+    font-size:14px;
+    color:#d0d0d0;
+    margin-bottom:15px;
+}
+
+.match-odds{
+    display:flex;
+    gap:8px;
+}
+
+.odd-btn{
+    flex:1;
+    background:#2d3446;
+    border:none;
+    border-radius:10px;
+    padding:10px;
+    color:white;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.odd-btn:hover{
+    background:#4CAF50;
+}
+
+.market{
+    font-size:12px;
+    color:#cfcfcf;
+}
+
+.odd{
+    font-size:20px;
+    font-weight:bold;
+    margin-top:4px;
 }
