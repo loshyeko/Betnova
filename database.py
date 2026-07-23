@@ -1,7 +1,8 @@
 import psycopg2
+from psycopg2.extras import RealDictCursor
 from decimal import Decimal
 from datetime import datetime
-
+from market_engine import ( generate_draw_no_bet, generate_match_result, generate_correct_score, generate_double_chance, generate_btts, generate_over_under, generate_odd_even, generate_first_half, generate_second_half)
 DB_NAME = "betnova"
 DB_USER = "betnova_user"
 DB_PASSWORD = "Dean234@devlin2025"
@@ -333,39 +334,50 @@ def get_matches():
 
     return matches
 
-def get_markets(match_id):
 
+def get_markets(match_id):
     conn = get_connection()
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT market_name,
-               selection,
-               odds
-        FROM markets
-        WHERE match_id = %s
-        ORDER BY market_name;
+        SELECT
+            mt.name,
+            ms.selection_name,
+            ms.odds
+        FROM market_selections ms
+        JOIN market_types mt
+            ON ms.market_type_id = mt.id
+        WHERE ms.match_id = %s
+        ORDER BY mt.display_order, ms.display_order
     """, (match_id,))
 
-    markets = cur.fetchall()
+    rows = cur.fetchall()
 
     cur.close()
     conn.close()
 
-    return markets
+    grouped = {}
 
-def save_bet(phone, match_id, selection, odds, stake, potential_win):
+    for market_name, selection, odds in rows:
+        grouped.setdefault(market_name, []).append({
+            "name": selection,
+            "odds": float(odds)
+        })
+
+    return grouped
+
+def save_bet(phone, match_id, market, odds, stake, potential_win):
     conn = get_connection()
     cur = conn.cursor()
 
     cur.execute("""
         INSERT INTO bets
-        (phone, match_id, selection, odds, stake, potential_win, status, placed_at)
+        (phone, match_id, market, odds, stake, potential_win, status, placed_at)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     """, (
         phone,
         match_id,
-        selection,
+        market,
         odds,
         stake,
         potential_win,
@@ -412,7 +424,7 @@ def get_balance(phone):
 
 def save_deposit(
     phone,
-    merchant_reference,
+    reference,
     order_tracking_id,
     amount,
     payment_status
@@ -424,7 +436,7 @@ def save_deposit(
         INSERT INTO deposits
         (
             phone,
-            merchant_reference,
+            reference,
             order_tracking_id,
             amount,
             payment_status
@@ -434,7 +446,7 @@ def save_deposit(
         DO NOTHING
     """, (
         phone,
-        merchant_reference,
+        reference,
         order_tracking_id,
         amount,
         payment_status
@@ -458,4 +470,64 @@ def deposit_exists(order_tracking_id):
     cur.close()
     conn.close()
 
-    return exists   
+    return exists
+
+def generate_match_markets(match_id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    # Get match odds
+    cur.execute("""
+        SELECT home_odds, draw_odds, away_odds
+        FROM matches
+        WHERE id = %s
+    """, (match_id,))
+    match = cur.fetchone()
+
+    if not match:
+        cur.close()
+        conn.close()
+        return
+
+    home_odds, draw_odds, away_odds = map(float, match)
+
+    # Remove old markets
+    cur.execute(
+        "DELETE FROM match_markets WHERE match_id = %s",
+        (match_id,)
+    )
+
+    markets = []
+
+    markets.extend(generate_match_result(home_odds, draw_odds, away_odds))
+    markets.extend(generate_double_chance(home_odds, draw_odds, away_odds))
+    markets.extend(generate_draw_no_bet(home_odds, away_odds))
+    markets.extend(generate_correct_score
+    (
+        home_odds,
+        draw_odds,
+        away_odds
+    ))
+    markets.extend(generate_btts(home_odds, away_odds))
+    markets.extend(generate_over_under())
+    markets.extend(generate_odd_even())
+    markets.extend(generate_first_half(
+        home_odds,
+        draw_odds,
+        away_odds
+    ))
+    markets.extend(generate_second_half(
+        home_odds,
+        draw_odds,
+        away_odds
+    ))
+
+    cur.executemany("""
+        INSERT INTO match_markets
+        (match_id, market_name, selection, odds)
+        VALUES (%s, %s, %s, %s)
+    """, [(match_id, m, s, o) for m, s, o in markets])
+
+    conn.commit()
+    cur.close()
+    conn.close()

@@ -1,0 +1,175 @@
+
+<h2>Edit Markets</h2>
+
+<h3>{{ match.home_team }} vs {{ match.away_team }}</h3>
+<p>{{ match.league }} | {{ match.kickoff }}</p>
+
+
+<form method="POST">
+
+<h3>Match Result</h3>
+
+<table class="table table-striped">
+    <tr>
+        <td>Home Win</td>
+        <td>
+            <input
+                id="home_odds"
+                type="number"
+                step="0.01"
+                min="1.01"
+                class="form-control"
+            >
+        </td>
+    </tr>
+
+    <tr>
+        <td>Draw</td>
+        <td>
+            <input
+                id="draw_odds"
+                type="number"
+                step="0.01"
+                min="1.01"
+                class="form-control"
+            >
+        </td>
+    </tr>
+
+    <tr>
+        <td>Away Win</td>
+        <td>
+            <input
+                id="away_odds"
+                type="number"
+                step="0.01"
+                min="1.01"
+                class="form-control"
+            >
+        </td>
+    </tr>
+</table>
+
+{% for market_name, selections in markets.items() %}
+
+<details class="market-group" open>
+
+    <summary>
+        <strong>{{ market_name }}</strong>
+    </summary>
+
+    <table class="table table-striped">
+
+        <thead>
+            <tr>
+                <th>Selection</th>
+                <th>Odds</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for selection in selections %}
+
+        <tr>
+
+            <td>{{ selection.name }}</td>
+
+            <td>
+
+                <input
+                    type="number"
+                    step="0.01"
+                    min="1.01"
+                    class="form-control"
+                    name="market_{{ selection.id }}"
+                    value="{{ selection.odds }}"
+                    data-selection="{{ selection.name }}"
+                >
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</details>
+
+<br>
+
+{% endfor %}
+
+<button type="button" id="generateOdds" class="btn btn-primary">
+    Generate Odds
+</button>
+
+&nbsp;&nbsp;
+
+<button type="submit" class="btn btn-success">
+    Save All Markets
+</button>
+
+</form>
+
+<script src="{{ url_for('static', filename='js/odds_engine.js') }}"></script>
+<script src="{{ url_for('static', filename='js/odds_generator.js') }}"></script>
+
+<style>
+.market-group{
+    margin-bottom:20px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:10px;
+    background:#fff;
+}
+
+.market-group summary{
+    cursor:pointer;
+    font-size:18px;
+    font-weight:bold;
+    padding:10px;
+    background:#f5f5f5;
+    border-radius:5px;
+}
+
+.market-group table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+.market-group th,
+.market-group td{
+    padding:8px;
+    border-bottom:1px solid #ddd;
+}
+
+.market-group input{
+    width:120px;
+    padding:6px;
+    border:1px solid #ccc;
+    border-radius:4px;
+}
+
+.save-btn{
+    background:#28a745;
+    color:white;
+    padding:12px 20px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.save-btn:hover{
+    background:#218838;
+}
+</style>
+
+
+
+

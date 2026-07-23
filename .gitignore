@@ -2,3 +2,6 @@ venv/
 pycache/
 *.pyc
 temp/
+*.save
+*.save.*
+nano.*

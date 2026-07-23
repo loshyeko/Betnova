@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}BetNova Admin{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+
+<div class="admin-header">
+    <h2>BetNova Admin</h2>
+
+    <nav>
+        <a href="/admin">Dashboard</a> |
+        <a href="/admin/matches/add">Add Match</a> |
+        <a href="/admin/deposits">Deposits</a> |
+        <a href="/admin/withdrawals">Withdrawals</a> |
+        <a href="/admin/users">Users</a> |
+        <a href="/logout">Logout</a>
+    </nav>
+
+    <hr>
+</div>
+
+<div class="admin-content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

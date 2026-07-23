@@ -6,42 +6,18 @@ from werkzeug.security import check_password_hash
 import requests
 import uuid
 
-PESAPAL_CONSUMER_KEY = "mBtHTkpEO3JtHyDJr33oi+jLaHK5ZTvH"
-PESAPAL_CONSUMER_SECRET = "0tjx3NbCqQAOFBpyXEPC/+5BOhY="
-PESAPAL_IPN_ID = "983a6f54-b3ba-4965-8392-da61843d4435"
+PAYSTACK_PUBLIC_KEY = "pk_live_211a279571045d0b0a71588bb4c97089dc6311b4"
+PAYSTACK_BASE_URL = "https://api.paystack.co"
 
-PESAPAL_BASE_URL = "https://pay.pesapal.com/v3"
-
-def get_pesapal_token():
-    url = f"{PESAPAL_BASE_URL}/api/Auth/RequestToken"
-
-    payload = {
-        "consumer_key": PESAPAL_CONSUMER_KEY,
-        "consumer_secret": PESAPAL_CONSUMER_SECRET
+def paystack_headers():
+    return {
+        "Authorization": f"Bearer {PAYSTACK_SECRET_KEY}",
+        "Content-Type": "application/json",
+        "Accept": "appliction/json"
     }
-
-    response = requests.post(url, json=payload)
-    response.raise_for_status()
-
-    return response.json()["token"]
 
 app = Flask(__name__)
 
-@app.route("/pesapal/list-ipns")
-def list_ipns():
-    token = get_pesapal_token()
-
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/json"
-    }
-
-    response = requests.get(
-        "https://pay.pesapal.com/v3/api/URLSetup/GetIpnList",
-        headers=headers
-    )
-
-    return response.text
 
 def get_balance(phone):
     conn = get_connection()
@@ -79,14 +55,14 @@ def update_balance(phone, new_balance):
     cur.close()
     conn.close()
 
-def save_deposit(phone, merchant_reference, order_tracking_id, amount, payment_status):
+def save_deposit(phone, reference, order_tracking_id, amount, payment_status):
     conn = get_connection()
     cur = conn.cursor()
 
     cur.execute("""
         INSERT INTO deposits (
             phone,
-            merchant_reference,
+            reference,
             order_tracking_id,
             amount,
             payment_status
@@ -94,7 +70,7 @@ def save_deposit(phone, merchant_reference, order_tracking_id, amount, payment_s
         VALUES (%s, %s, %s, %s, %s)
     """, (
         phone,
-        merchant_reference,
+        reference,
         order_tracking_id,
         amount,
         payment_status
@@ -178,7 +154,6 @@ def dashboard():
 
 @app.route("/match/<int:match_id>")
 def match_details(match_id):
-
     phone = session.get("phone")
 
     if not phone:
@@ -186,9 +161,12 @@ def match_details(match_id):
 
     match = get_match(match_id)
     markets = get_markets(match_id)
+    print(markets)
 
     if not match:
         return "Match not found."
+
+    markets = get_markets(match_id)
 
     return render_template(
         "match_details.html",
@@ -278,34 +256,25 @@ def place_bet():
         })
 
     data = request.get_json()
-
     stake = float(data["stake"])
     balance = get_balance(phone)
-
+    print("DATA:", data)
+    print("BALANCE:", balance, "STAKE:", stake)
     if stake <= 0:
         return jsonify({
             "success": False,
             "message": "Invalid stake."
         })
 
-    if stake > balance:
-        return jsonify({
-            "success": False,
-            "message": "Insufficient balance."
-        })
+    if balance < stake:
+         return jsonify({
+             "success": False,
+             "message": "Insufficient balance"
+    })
 
-    save_bet(
-        phone=phone,
-        match_id=data["match_id"],
-        selection=data["selection"],
-        odds=data["odds"],
-        stake=stake,
-        potential_win=data["potential_win"]
-    )
 
+    new_balance = balance - stake
     update_balance(phone, stake)
-
-    new_balance = get_balance(phone)
 
     return jsonify({
         "success": True,
@@ -313,34 +282,64 @@ def place_bet():
         "balance": new_balance
     })
  
-
 @app.route("/betslip")
 def betslip():
-
     phone = session.get("phone")
 
     if not phone:
         return redirect("/login")
 
     user = get_user(phone)
-    currency = get_currency(user[0])
+
+    if not user:
+        session.clear()
+        return redirect("/login")
+
+    country = user[0]
+
+    if country == "254":
+        currency = "KSh"
+    elif country == "255":
+        currency = "TZS"
+    elif country == "256":
+        currency = "UGX"
+    elif country == "243":
+        currency = "FC"
+    else:
+        currency = "USD"
 
     return render_template(
         "betslip.html",
+        phone=phone,
         currency=currency
     )
 
 
 @app.route("/account")
 def account():
-
     phone = session.get("phone")
 
     if not phone:
         return redirect("/login")
 
     user = get_user(phone)
-    currency = get_currency(user[0])
+
+    if not user:
+        session.clear()
+        return redirect("/login")
+
+    country = user[0]
+
+    if country == "254":
+        currency = "KSh"
+    elif country == "255":
+        currency = "TZS"
+    elif country == "256":
+        currency = "UGX"
+    elif country == "243":
+        currency = "FC"
+    else:
+        currency = "USD"
 
     return render_template(
         "account.html",
@@ -348,6 +347,7 @@ def account():
         balance=user[4],
         currency=currency
     )
+
 
 @app.route("/deposit")
 def deposit():
@@ -364,8 +364,10 @@ def deposit():
         "deposit.html",
         balance=user[4],
         currency=currency,
-        phone=user[2]
+        phone=user[2],
+        country=user[0]
     )
+
 
 @app.route("/deposit/confirm")
 def deposit_confirm():
@@ -383,63 +385,118 @@ def deposit_confirm():
     if amount <= 0:
         return "Invalid amount", 400
 
-    token = get_pesapal_token()
-
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-    }
-
-    merchant_reference = phone
+    email = f"{phone}@betnova.lol"
 
     payload = {
-        "id": merchant_reference,
-        "currency": "KES",
-        "amount": amount,
-        "description": "BetNova Wallet Deposit",
-        "callback_url": "https://http://www.betnova.lol/pesapal/callback",
-        "notification_id": PESAPAL_IPN_ID,
-        "billing_address": {
-            "phone_number": phone
+        "email": email,
+        "amount": int(amount * 100),   # Paystack uses the smallest currency unit
+        "callback_url": "https://www.betnova.lol/paystack/callback",
+        "metadata": {
+            "phone": phone
         }
-    }   
-
-    response = requests.post(
-        "https://pay.pesapal.com/v3/api/Transactions/SubmitOrderRequest",
-        json=payload,
-        headers=headers
-    )
-
-    data = response.json()
-
-    return redirect(data["redirect_url"])
-
-@app.route("/pesapal/callback")
-def pesapal_callback():
-
-    order_tracking_id = request.args.get("OrderTrackingId")
-
-    token = get_pesapal_token()
-
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/json"
     }
 
-    response = requests.get(
-        f"https://pay.pesapal.com/v3/api/Transactions/GetTransactionStatus?orderTrackingId={order_tracking_id}",
-        headers=headers
+    response = requests.post(
+        f"{PAYSTACK_BASE_URL}/transaction/initialize",
+        json=payload,
+        headers=paystack_headers()
     )
 
     data = response.json()
 
-    if data["payment_status_description"] == "Completed":
-        amount = float(data["amount"])
-        phone = session["phone"]
+    if not data.get("status"):
+        return data.get("message", "Unable to initialize payment"), 400
+
+    return redirect(data["data"]["authorization_url"])
+
+
+@app.route("/paystack/webhook", methods=["POST"])
+def paystack_webhook():
+    import hmac
+    import hashlib
+
+    signature = request.headers.get("x-paystack-signature")
+
+    body = request.get_data()
+
+    expected = hmac.new(
+        PAYSTACK_SECRET_KEY.encode(),
+        body,
+        hashlib.sha512
+    ).hexdigest()
+
+    if signature != expected:
+        return "Invalid signature", 401
+
+    event = request.get_json()
+
+    if event["event"] == "charge.success":
+
+        data = event["data"]
+
+        phone = data["metadata"]["phone"]
+        amount = float(data["amount"]) / 100
+        reference = data["reference"]
+
+        if deposit_exists(reference):
+            return "OK", 200
 
         balance = get_balance(phone)
+
         update_balance(phone, balance + amount)
+
+        save_deposit(
+            phone=phone,
+            reference=reference,
+            order_tracking_id=reference,
+            amount=amount,
+            payment_status="Completed"
+        )
+
+    return "OK", 200
+
+
+@app.route("/paystack/callback")
+def paystack_callback():
+
+    reference = request.args.get("reference")
+
+    if not reference:
+        return "Missing transaction reference", 400
+
+    response = requests.get(
+        f"{PAYSTACK_BASE_URL}/transaction/verify/{reference}",
+        headers=paystack_headers()
+    )
+
+    result = response.json()
+
+    if not result.get("status"):
+        return "Payment verification failed", 400
+
+    payment = result["data"]
+
+    if payment["status"] != "success":
+        return "Payment not completed", 400
+
+    phone = payment["metadata"]["phone"]
+    amount = payment["amount"] / 100
+
+    # Prevent duplicate wallet credit
+    if deposit_exists(reference):
+        return redirect("/account")
+
+    current_balance = get_balance(phone)
+
+    update_balance(phone, current_balance + amount)
+
+    save_deposit(
+        phone=phone,
+        reference=phone,
+        order_tracking_id=reference,
+        amount=amount,
+        payment_status="Completed"
+    )
 
     return redirect("/account")
 
@@ -489,7 +546,7 @@ def my_bets():
         SELECT
             id,
             match_id,
-            selection,
+            market,
             odds,
             stake,
             potential_win,
@@ -634,7 +691,7 @@ def pesapal_ipn():
 
     save_deposit(
         phone=phone,
-        merchant_reference=merchant_reference,
+        reference=reference,
         order_tracking_id=order_tracking_id,
         amount=amount,
         payment_status="Completed"
@@ -746,6 +803,7 @@ def admin_dashboard():
         deposits=deposits
     )
 
+
 @app.route("/admin/matches/add", 
 methods=["GET", "POST"])
 def add_match():
@@ -772,7 +830,8 @@ def add_match():
             INSERT INTO matches
             (sport, league, home_team, away_team, kickoff,
              home_odds, draw_odds, away_odds)
-            VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING id
         """, (
             sport,
             league,
@@ -784,13 +843,52 @@ def add_match():
             away_odds
         ))
 
+        match_id = cur.fetchone()[0]
+
+        cur.execute("""
+            SELECT mt.name,
+                   tmpl.selection_name
+            FROM market_templates tmpl
+            JOIN market_types mt
+              ON tmpl.market_type_id = mt.id
+            WHERE tmpl.enabled = TRUE
+            ORDER BY mt.display_order, tmpl.display_order
+        """)
+
+        templates = cur.fetchall()
+
+        for market_name, selection_name in templates:
+
+            if selection_name == "Home":
+                odds = home_odds
+            elif selection_name == "Draw":
+                odds = draw_odds
+            elif selection_name == "Away":
+                odds = away_odds
+            else:
+                odds = 1.00
+
+            cur.execute("""
+                INSERT INTO market_selections
+                (match_id, market_type_id, selection_name, odds)
+                SELECT %s, mt.id, %s, %s
+                FROM market_types mt
+                WHERE mt.name = %s
+            """, (
+                match_id,
+                selection_name,
+                odds,
+                market_name
+            ))
+
         conn.commit()
         cur.close()
         conn.close()
 
-        return redirect("/admin/dashboard")
+        return redirect(url_for("admin_match_markets", match_id=match_id))
 
     return render_template("add_match.html")
+
 
 @app.route("/admin/matches")
 def admin_matches():
@@ -921,7 +1019,7 @@ def delete_match(match_id):
     cur = conn.cursor()
 
     # Delete all markets belonging to the match first
-    cur.execute("DELETE FROM markets WHERE match_id = %s", (match_id,))
+    cur.execute("DELETE FROM market_selections WHERE match_id = %s", (match_id,))
 
     # Delete the match
     cur.execute("DELETE FROM matches WHERE id = %s", (match_id,))
@@ -931,6 +1029,105 @@ def delete_match(match_id):
     conn.close()
 
     return redirect("/admin/matches")
+
+@app.route("/admin/matches/<int:match_id>/markets", 
+methods=["GET", "POST"])
+def admin_match_markets(match_id):
+
+    if not session.get("admin"):
+        return redirect("/admin/login")
+
+    match = get_match(match_id)
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    if request.method == "POST":
+
+        cur.execute("""
+            SELECT id
+            FROM market_selections
+            WHERE match_id = %s
+        """, (match_id,))
+
+        selection_ids = cur.fetchall()
+
+        for (selection_id,) in selection_ids:
+
+            field = f"market_{selection_id}"
+
+            if field in request.form:
+
+                cur.execute("""
+                    UPDATE market_selections
+                    SET odds = %s
+                    WHERE id = %s
+                """, (
+                    request.form[field],
+                    selection_id
+                ))
+
+        conn.commit()
+
+        cur.close()
+        conn.close()
+
+        return redirect("/admin/dashboard")
+
+    cur.execute("""
+        SELECT
+            ms.id,
+            mt.name,
+            ms.selection_name,
+            ms.odds
+        FROM market_selections ms
+        JOIN market_types mt
+            ON mt.id = ms.market_type_id
+        WHERE ms.match_id = %s
+        ORDER BY mt.display_order, ms.display_order
+    """, (match_id,))
+
+    rows = cur.fetchall()
+
+    markets = {}
+
+    for market_id, market_name, selection_name, odds in rows:
+
+        if market_name not in markets:
+            markets[market_name] = []
+
+        markets[market_name].append({
+            "id": market_id,
+            "name": selection_name,
+            "odds": odds
+        })
+
+    cur.close()
+    conn.close()
+
+    return render_template(
+        "admin_match_markets.html",
+        match=match,
+        markets=markets
+    )
+
+@app.route("/sports")
+def sports():
+    phone = session.get("phone")
+
+    if not phone:
+        return redirect("/login")
+
+    user = get_user(phone)
+    currency = get_currency(user[0])
+    matches = get_matches()
+
+    return render_template(
+        "dashboard.html",
+        matches=matches,
+        phone=phone,
+        currency=currency
+    )
 
 if __name__== "__main__":
     app.run(host="127.0.0.1", 

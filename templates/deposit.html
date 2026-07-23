@@ -30,11 +30,35 @@ href="{{ url_for('static', filename='css/style.css') }}">
 
 <h3>Current Balance</h3>
 
-<div class="balance-display">
+</div>
 
-{{ currency }} {{ balance }}
+<div class="balance-display">
+    {{ currency }} {{ balance }}
+</div>
 
 </div>
+
+{% if country|int == 243 %}
+<div class="deposit-card">
+    <h3>🇨🇩 Deposit Options</h3>
+
+    <p><strong>M-PESA MERCHANT</strong><br>
+    08000418967<br>
+    Make Deposit</p>
+
+    <p><strong>AIRTEL MONEY</strong><br>
+    0977143991<br>
+    Send Money</p>
+
+    <p><strong>ORANGE MONEY</strong><br>
+    0849751858</p>
+    Send Money</p>
+
+    <p><strong>Important:</strong> After making your payment, submit the transaction reference so your wallet can be credited.</p>
+</div>
+{% endif %}
+
+<div class="deposit-card">
 
 </div>
 

@@ -1,144 +1,65 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-    <title>Bet Slip - BetNova</title>
-
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetNova Bet Slip</title>
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/betslip.css') }}">
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/betslip.css') }}">
-
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
 
-<header class="topbar">
+<div class="betslip-page">
 
-    <a href="/dashboard" class="back-btn">
-        ← Back
-    </a>
+    <div class="betslip-header">
+        <a href="/dashboard">
+            <i class="bi bi-arrow-left"></i>
+        </a>
 
-    <h2>Bet Slip</h2>
+        <h2>Bet Slip</h2>
 
-</header>
+        <span id="selection-count">0</span>
+    </div>
 
-<div class="betslip-container">
+    <div id="bet-items">
 
-    <div class="betslip-card">
-
-        <h3>Selections</h3>
-
-        <div id="bet-items">
-
-            <p class="empty-slip">
-                No selections yet.
-            </p>
-
-        </div>
+        <!-- JavaScript will insert selections here -->
 
     </div>
 
-    <div class="betslip-card">
+    <div class="betslip-summary">
 
         <div class="summary-row">
-
             <span>Total Odds</span>
-
-            <strong id="total-odds">
-                1.00
-            </strong>
-
+            <strong id="total-odds">0.00</strong>
         </div>
 
-        <div class="stake-section">
-
-            <label>Stake</label>
-
+        <div class="summary-row">
+            <span>Stake ({{ currency }})</span>
             <input
-                type="number"
                 id="stake"
-                placeholder="Enter stake">
-
+                type="number"
+                placeholder="Enter Stake">
         </div>
 
         <div class="summary-row">
-
             <span>Potential Win</span>
-
-            <strong>
-
-                {{ currency }}
-
-                <span id="potential-win">
-                    0.00
-                </span>
-
-            </strong>
-
+            <strong id="potential-win">{{ currency }} 0.00</strong>
         </div>
 
-        <div class="summary-row">
-
-            <span>Win Bonus</span>
-
-            <strong>
-
-                {{ currency }}
-
-                <span id="win-bonus">
-                    0.00
-                </span>
-
-            </strong>
-
-        </div>
-
-        <div class="summary-row payout">
-
-            <span>Payout</span>
-
-            <strong>
-
-                {{ currency }}
-
-                <span id="payout">
-                    0.00
-                </span>
-
-            </strong>
-
-        </div>
+        <button id="place-bet-btn">
+            Place Bet
+        </button>
 
     </div>
 
 </div>
 
-<div class="placebet-footer">
-
-    <button id="place-bet-btn">
-
-        Place Bet
-
-    </button>
-
-</div>
-
-<script>
-
-const currency = "{{ currency }}";
-
-</script>
-
-<script src="{{ url_for('static',
-filename='js/script.js') }}"></script>
+<script src="{{ url_for('static', filename='js/betslip.js') }}"></script>
 
 </body>
-
 </html>

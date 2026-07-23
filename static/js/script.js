@@ -318,4 +318,3 @@ if (document.getElementById("betslip-text"))
 
 if (document.getElementById("account-text"))
     document.getElementById("account-text").textContent = t.account;
-

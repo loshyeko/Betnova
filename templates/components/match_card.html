@@ -1,0 +1,51 @@
+<div class="match-card">
+
+    <!-- Time & Date -->
+    <div class="match-time">
+        {{ match[4].strftime('%H:%M') }} • {{ match[4].strftime('%d %b %Y') }}
+    </div>
+
+    <!-- Teams -->
+    <div class="match-teams">
+        <span class="home-team">{{ match[2] }}</span>
+
+        <span class="vs">VS</span>
+
+        <span class="away-team">{{ match[3] }}</span>
+    </div>
+
+    <!-- League -->
+    <div class="match-league">
+        {{ match[1] }}
+    </div>
+
+    <!-- Odds -->
+    <div class="odds-row">
+
+
+        <button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','1','Home','{{ match[5] }}')">
+    <div class="market">1</div>
+    <div class="odd">{{ match[5] }}</div>
+</button>
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','X','Draw','{{ match[6] }}')">
+    <div class="market">X</div>
+    <div class="odd">{{ match[6] }}</div>
+</button>
+
+<button class="odd-btn"
+onclick="addToBet('{{ match[0] }}','{{ match[2] }} vs {{ match[3] }}','2','Away','{{ match[7] }}')">
+    <div class="market">2</div>
+    <div class="odd">{{ match[7] }}</div>
+</button>
+
+    </div>
+
+    <!-- More Markets -->
+    <a href="{{ url_for('match_details', match_id=match [0]) }}" class="more-markets-btn">
+        + More Markets
+    </a>
+
+</div>

@@ -1,0 +1,12 @@
+body {
+    background: #10131c;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.bet-card {
+    background: #1d2333;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}

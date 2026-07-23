@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BetNova</title>
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<head>
 
 </head>
 
@@ -101,14 +102,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <button class="league active">Premier League</button>
 <button class="league">La Liga</button>
-<button class="league">Serie A</button>
-<button class="league">Bundesliga</button>
-<button class="league">Ligue 1</button>
 <button class="league">Champions League</button>
-<button class="league">Europa League</button>
-<button class="league">CAF Champions League</button>
-<button class="league">CAF Confederation
-     Cup</button>
 
      <div class="matches-container">
 
@@ -118,9 +112,33 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 </div>
 
+<nav class="bottom-nav">
+
+    <a href="/dashboard" class="nav-item active">
+        <i class="bi bi-house-fill"></i>
+        <span>Home</span>
+    </a>
+
+    <a href="/sports" class="nav-item">
+        <i class="bi bi-trophy"></i>
+        <span>Sports</span>
+    </a>
+
+    <a href="/betslip" class="nav-item">
+        <i class="bi bi-receipt-cutoff"></i>
+        <span>Betslip</span>
+    </a>
+
+    <a href="/account" class="nav-item">
+        <i class="bi bi-person-fill"></i>
+        <span>account</span>
+    </a>
+
+</nav>
+
+ 
 <script src="{{ url_for('static', filename='js/language.js') }}"></script>
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-
 </body>
 </html>
